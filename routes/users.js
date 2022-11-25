@@ -1,7 +1,4 @@
-let express = require('express')
-let router = express.Router()
-
-/* GET users listing. */
+let router = require('express').Router()
 
 var usersCtrl = require('../controllers/users');
 

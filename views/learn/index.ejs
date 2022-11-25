@@ -1,0 +1,36 @@
+<%- include('../partials/header') %> 
+<div class="container">
+    <div class="side-bar" id="learn-stats">
+        <h6 id="stats">Learning Stats</h6>
+        <!-- Have ejs for the numbers below: amount gone through / amount select -->
+        <h5 id="prompted">Flash cards prompted: 5/30</h5>
+        <h5 id="known-words">Portuguese words known: 5</h5>
+        <div id="recent-words-prompted">
+            <h5 id="recent-words">Recent Words Prompted:</h5>
+            <!-- build for each loop here to render recent words -->
+            <ol>
+                <li>claro: of course</li>
+                <li>pensar: to think</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col s12 m7">
+        <h2 class="header"></h2>
+        <div class="card horizontal">
+          <div class="card-stacked">
+            <div class="card-content">
+                <!-- embed js here to shuffle word -->
+              <h2>Bonjour</h2>
+            </div>
+            <div class="card-action">
+              <a href="#">Know</a>
+              <a href="#">Don't Know</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<%- include('../partials/footer') %> 
