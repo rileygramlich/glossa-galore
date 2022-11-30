@@ -1,25 +1,46 @@
 const User = require('../models/user');
+const Words = require('../models/word')
+const top1000 = require('../config/top1000')
 
 module.exports = {
-    index
+    index,
+    addToKnown,
+    addToUnknown,
+    languages
 }
 
 function index(req, res) {
-    console.log(req.query)
-  // Make the query object to use with user.find based up
-  // the user has submitted the search form or now
-  let modelQuery = req.query.name ? {name: new RegExp(req.query.name, 'i')} : {};
-  // Default to sorting by name
-  let sortKey = req.query.sort || 'name';
-  User.find(modelQuery)
-  .sort(sortKey).exec(function(err, users) {
-    if (err) return next(err);
-    // Passing search values, name & sortKey, for use in the EJS
     res.render('learn/index', {
-      users,
       user: req.user,
-      name: req.query.name,
-      sortKey
+      topWords: top1000.words
     });
-  });
-} 
+}
+
+function addToKnown(req, res) {
+  console.log(req.body)
+  User.findById(req.user.id, function(err, user) {
+    user.knownWords.push(req.body.known)
+    user.save(function(err) {
+      console.log(user)
+      res.redirect(`/learn/${req.user.id}`)
+    })
+  })
+}
+
+function addToUnknown (req, res) {
+  console.log(req.body)
+  User.findById(req.user.id, function(err, user) {
+    user.unknownWords.push(req.body.unknown)
+    user.save(function(err) {
+      console.log(user)
+      res.redirect(`/learn/${req.user.id}`)
+    })
+  })
+}
+
+function languages (req, res) {
+  res.render('learn/languages', {
+    user: req.user,
+    topWords: top1000.words
+  })
+}

@@ -1,36 +1,80 @@
 <%- include('../partials/header') %> 
-<div class="container">
-    <div class="side-bar" id="learn-stats">
-        <h6 id="stats">Learning Stats</h6>
-        <!-- Have ejs for the numbers below: amount gone through / amount select -->
-        <h5 id="prompted">Flash cards prompted: 5/30</h5>
-        <h5 id="known-words">Portuguese words known: 5</h5>
-        <div id="recent-words-prompted">
-            <h5 id="recent-words">Recent Words Prompted:</h5>
-            <!-- build for each loop here to render recent words -->
-            <ol>
-                <li>claro: of course</li>
-                <li>pensar: to think</li>
-            </ol>
+<% let word = topWords[Math.floor(Math.random()*topWords.length)] %> 
+<div class="col s12 m7">
+    <h2 class="header"></h2>
+    <div class="card horizontal">
+      <div class="card-stacked">
+        <div class="card-content">
+            <!-- embed js here to shuffle word -->
+          <h2><%= word %>  </h2>
         </div>
-    </div>
-
-    <div class="col s12 m7">
-        <h2 class="header"></h2>
-        <div class="card horizontal">
-          <div class="card-stacked">
-            <div class="card-content">
-                <!-- embed js here to shuffle word -->
-              <h2>Bonjour</h2>
-            </div>
-            <div class="card-action">
-              <a href="#">Know</a>
-              <a href="#">Don't Know</a>
-            </div>
-          </div>
+        <div id="card-action">
+          <form class="form" id="know-form" action="/learn/know" method="POST">
+            <input type="text" name="known" id="word" value="<%= word %>" readonly style="font-size: 1px">
+            <input type="submit" value="Know">
+          </form>
+          <form class="form" id="unknown-form" action="/learn/unknown" method="POST">
+            <input type="text" name="unknown" id="word" value="<%= word %>" readonly style="font-size: 1px">
+            <input type="submit" value="Don't Know">
+          </form>
         </div>
       </div>
     </div>
-
-
-<%- include('../partials/footer') %> 
+  </div>
+</div>
+<div class="container">
+  <div>
+    <% if (user) { %>
+      <h2 id="profile">Profile</h2>
+      <h5 id=""><%= user.name %> </h5>
+      <h5 id=""><%= user.email %> </h5>
+      <% } else { %>
+        <a href="/auth/google">Click to login</a>
+        <% } %>
+        
+      <div class="container">
+        <div class="side-bar" id="learn-stats">
+          <h6 id="stats">Learning Stats:</h6>
+          <!-- Have ejs for the numbers below: amount gone through / amount select -->
+          <h5 id="prompted">Flash cards prompted: 5/30</h5>
+          <div class="stats-div">
+            <h5 id="known-words">Enlish words known: <%= user.knownWords.length %> </h5>
+            <ol>
+              <% user.knownWords.forEach(known => { %>
+               <li><%= known %> </li>
+              <% }) %>
+            </ol>
+          </div>
+          <div class="stats-div">
+            <h5 id="unknown-words">Enlish words unknown: <%= user.unknownWords.length %> </h5>
+            <ol>
+              <% user.unknownWords.forEach(unknown => { %>
+               <li><%= unknown %> </li>
+              <% }) %>
+            </ol>
+          </div>
+          <div id="recent-words-prompted">
+            <h5 id="recent-words">Recent Words Prompted:</h5>
+            <!-- build for each loop here to render recent words -->
+            <ol>
+              <li>claro: of course</li>
+              <li>pensar: to think</li>
+            </ol>
+          </div>
+          <div class="random">
+            <h4>Shuffled word: <%= word %></h4> 
+            <a href="/learn">New word</a>
+          </div>
+          <div>
+            <h2 id="topwords">Top 1000 Words</h2>
+          <% topWords.forEach(word => { %>
+           <p><%= word %>  </p>
+           <% }) %>
+          </div>
+        </div>
+      </div>
+          
+          
+        
+        <%- include('../partials/footer') %> 
+        

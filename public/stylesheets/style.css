@@ -8,14 +8,37 @@ a {
   color: #00B7FF;
 }
 
+/* Learn Page */
+
 .container {
   display: flex;
-  flex-direction: column-reverse;
-  justify-content: center;
-   
-
+  justify-content: stretch;
+  margin:auto
 }
 
 .col {
   text-align: center;
 }
+
+/* input {
+  text-align: center;
+} */
+
+#card-action {
+  display: flex;
+  justify-content: center;
+
+}
+
+#word {
+  border: none;
+  max-height: 1px;
+  font-size: 1px;
+}
+
+#learn-stats {
+  display: flex;
+}
+
+/* .card-content {
+} */

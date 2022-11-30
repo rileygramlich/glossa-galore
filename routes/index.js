@@ -1,10 +1,10 @@
 let router = require('express').Router()
 const passport = require('passport');
+let indexCtrl = require('../controllers/index')
+const request = require('request')
 
 // The root route renders our only view
-router.get('/', function(req, res) {
-  res.render('index')
-});
+router.get('/', indexCtrl.index)
 
 // Google OAuth login route
 router.get('/auth/google', passport.authenticate(
@@ -16,15 +16,19 @@ router.get('/auth/google', passport.authenticate(
 router.get('/oauth2callback', passport.authenticate(
   'google',
   {
-    successRedirect : '/users',
+    successRedirect : '/learn',
     failureRedirect : '/users'
   }
 ));
 
 // OAuth logout route
 router.get('/logout', function(req, res){
-  req.logout()
+  req.logout(function(err) {
+    if (err) { return next(err); }
+  })
   res.redirect('/')
-});
+})
+
+
 
 module.exports = router;

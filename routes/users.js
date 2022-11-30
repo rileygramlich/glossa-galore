@@ -5,6 +5,7 @@ var usersCtrl = require('../controllers/users');
 // GET /users
 router.get('/', usersCtrl.index);
 
+
 // POST 
 // We will already have access to the logged in student on
 // the server, therefore do not use: 
