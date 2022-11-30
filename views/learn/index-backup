@@ -5,48 +5,23 @@
     <div class="card horizontal">
       <div class="card-stacked">
         <div class="card-content">
-          <!-- embed js here to shuffle word -->
-          <h2><%= word.fr %>  </h2>
+            <!-- embed js here to shuffle word -->
+          <h2><%= word %>  </h2>
         </div>
         <div id="card-action">
           <form class="form" id="know-form" action="/learn/know" method="POST">
-            <input type="text" name="known" id="word" value="<%= word.fr %>" readonly style="font-size: 1px">
+            <input type="text" name="known" id="word" value="<%= word %>" readonly style="font-size: 1px">
             <input type="submit" value="Know">
           </form>
           <form class="form" id="unknown-form" action="/learn/unknown" method="POST">
-            <input type="text" name="unknown" id="word" value="<%= word.fr %>" readonly style="font-size: 1px">
+            <input type="text" name="unknown" id="word" value="<%= word %>" readonly style="font-size: 1px">
             <input type="submit" value="Don't Know">
           </form>
         </div>
       </div>
     </div>
   </div>
-  <div>
-    <div class="stats-div">
-      <% if (user.unknownWords) { %> 
-       <h5 id="unknown-words">French words unknown: <%= user.unknownWords.length %> </h5>
-      <ol>
-        <% user.unknownWords.forEach(unknown => { %>
-         <li><%= unknown %> </li>
-        <% }) %>
-      </ol>
-      <% } else { %> 
-        <h5 id="unknown-words">French words unknown: Start learning French! </h5>
-        <% } %> 
-      </div>
-      <div class="stats-div">
-        <% if (user.knownWords) { %> 
-         <h5 id="known-words">French words known: <%= user.knownWords.length %> </h5>
-        <ol>
-          <% user.knownWords.forEach(known => { %>
-           <li><%= known %> </li>
-          <% }) %>
-        </ol>
-        <% } else { %> 
-          <h5 id="known-words">French words known: Start learning French! </h5>
-          <% } %> 
-      </div>
-  </div>
+</div>
 <div class="container">
   <div>
     <% if (user) { %>
@@ -62,6 +37,30 @@
           <h6 id="stats">Learning Stats:</h6>
           <!-- Have ejs for the numbers below: amount gone through / amount select -->
           <h5 id="prompted">Flash cards prompted: 5/30</h5>
+          <div class="stats-div">
+            <% if (user.knownWords) { %> 
+             <h5 id="known-words">French words known: <%= user.knownWords.length %> </h5>
+            <ol>
+              <% user.knownWords.forEach(known => { %>
+               <li><%= known %> </li>
+              <% }) %>
+            </ol>
+            <% } else { %> 
+              <h5 id="known-words">French words known: Start learning French! </h5>
+              <% } %> 
+          </div>
+          <div class="stats-div">
+            <% if (user.unknownWords) { %> 
+             <h5 id="unknown-words">French words unknown: <%= user.unknownWords.length %> </h5>
+            <ol>
+              <% user.unknownWords.forEach(unknown => { %>
+               <li><%= unknown %> </li>
+              <% }) %>
+            </ol>
+            <% } else { %> 
+              <h5 id="unknown-words">French words unknown: Start learning French! </h5>
+              <% } %> 
+          </div>
           <div id="recent-words-prompted">
             <h5 id="recent-words">Recent Words Prompted:</h5>
             <!-- build for each loop here to render recent words -->
@@ -71,14 +70,12 @@
             </ol>
           </div>
           <div class="random">
-            <h4>Shuffled word: <%= word.fr %></h4> 
+            <h4>Shuffled word: <%= word %></h4> 
             <a href="/learn">New word</a>
           </div>
           <div>
             <h2 id="wordBank">Top 1000 Words</h2>
-            <% wordBank.forEach(word => { %>
-              <p><%= word.rank %>  <%= word.fr %>: <%= word.en %>   </p>
-            <% }) %>
+            <p><%= wordBank %>  </p>
           </div>
         </div>
       </div>

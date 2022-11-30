@@ -1,28 +1,6 @@
 <%- include('../partials/header') %> 
-<% let word = topWords[Math.floor(Math.random()*topWords.length)] %> 
-<div class="container">
-    <div>
-    <% if (user) { %>
-      <h2 id="profile">Profile</h2>
-      <h5 id=""><%= user.name %> </h5>
-      <h5 id=""><%= user.email %> </h5>
-      <% } else { %>
-        <a href="/auth/google">Click to login</a>
-        <% } %>
-    </div>
-      
-          <div class="random">
-            <h4>Shuffled word: <%= word %></h4> 
-            <a href="/learn">New word</a>
-          </div>
-          <div>
-            <h2 id="topwords">Top 1000 Words</h2>
-          <% topWords.forEach(word => { %>
-           <p><%= word %>  </p>
-           <% }) %>
-          </div>
-        </div>
-      
+
+<!-- select language you'd like to learn -->
           
           
         

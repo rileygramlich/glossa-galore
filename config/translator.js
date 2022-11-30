@@ -1,4 +1,4 @@
-const token = '7883edd0-4b28-ed01-f870-44b73a3120d5:fx'
+// const token = '7883edd0-4b28-ed01-f870-44b73a3120d5:fx'
 const deepl = require('deepl-node')
 const topWords = require('./top1000')
 
