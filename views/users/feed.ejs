@@ -14,7 +14,7 @@
                   <div class="profile-header-content">
                      <!-- BEGIN profile-header-img -->
                      <div class="profile-header-img">
-                        <img src="<%= user.avatar %>" alt="profile avatar">
+                        <img class="avatar-img" src="<%= user.avatar %>" alt="profile avatar">
                      </div>
                      <!-- END profile-header-img -->
                      <!-- BEGIN profile-header-info -->
@@ -101,13 +101,13 @@
                             </div> -->
                             <!-- ADD FUNCTIONALITY TO THESE LINKS -->
                             <div class="timeline-footer">
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
+                                <!-- <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
+                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a> -->
                                 <a href="/users/<%= user.id %>/edit-post/<%= post.id %>" class="m-r-15 text-inverse-lighter"><i class="fa fa-pencil fa-fw fa-lg m-r-3"></i>Edit</a>
                                 <a href="/users/<%= user.id %>/delete-post/<%= post.id %>" class="m-r-15 text-inverse-lighter"><i class="fa fa-trash fa-fw fa-lg m-r-3"></i>Delete</a>
                             </div>
-                            <div class="timeline-comment-box">
+                            <!-- <div class="timeline-comment-box">
                                 <div class="user"><img src="<%= user.avatar %> "></div>
                                 <div class="input">
                                     <form action="">
@@ -119,7 +119,7 @@
                                         </div>
                                     </form>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- end timeline-body -->
                     </li>

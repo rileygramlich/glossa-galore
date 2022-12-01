@@ -31,7 +31,7 @@
         <% if (user) { %>
           <h5 id="profile-title">Profile</h5>
           <p id="user-name"><%= user.name %> </p>
-          <img src=<%= user.avatar %>>
+          <img class="learn-avatar" src=<%= user.avatar %>>
           <% } else { %>
             <a href="/auth/google">Click to login to save progress!</a>
             <% } %>

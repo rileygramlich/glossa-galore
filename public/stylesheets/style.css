@@ -54,9 +54,9 @@ a {
   text-align: center;
 }
 
-/* input {
-  text-align: center;
-} */
+.learn-avatar {
+  border-radius: 100px;
+}
 
 #card-action {
   display: flex;
@@ -297,12 +297,26 @@ a {
   margin-bottom: 10px;
   border: 2px solid #E2E7EB;
   overflow: hidden;
-  border-radius: 4px
+  border-radius: 100px;
 }
 
-.profile-image img {
-  display: block;
-  max-width: 100%
+.profile-header-img {
+  float: left;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  margin: 0 0 -20px;
+  padding: 3px;
+  /* border-radius: 100px; */
+  background: #fff
+}
+
+.avatar-img {
+  object-fit: cover;
+  min-height:100%;
+  min-width: 100%;
 }
 
 .profile-highlight {
@@ -745,7 +759,7 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 /* Do an horizontal flip when you move the mouse over the flip box container */
-.flip-card:active .flip-card-inner {
+.flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
 }
 
@@ -770,3 +784,8 @@ select.form-control:not([size]):not([multiple]) {
   color: white;
   transform: rotateY(180deg);
 }
+
+/* make flashcard flip on :active */
+/* @media screen {
+  
+} */
