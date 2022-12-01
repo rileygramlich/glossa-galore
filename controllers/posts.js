@@ -67,5 +67,11 @@ function edit(req, res) {
 function update(req, res) {
     User.findById(req.params.uId, function(err, user) {
         console.log(user)
+        let post = user.posts.id(req.params.pId)
+        post.title = req.body.title
+        post.recentWords = req.body.recentWords
+        post.content = req.body.content
+        user.save()
+        res.redirect(`/users/${req.params.uId}/feed`)
     })
 }
