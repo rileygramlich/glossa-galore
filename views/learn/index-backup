@@ -41,7 +41,7 @@
             <% if (user.knownWords) { %> 
              <h5 id="known-words">French words known: <%= user.knownWords.length %> </h5>
             <ol>
-              <% user.knownWords.forEach(known => { %>
+              <% user.knownWords.reverse().forEach(known => { %>
                <li><%= known %> </li>
               <% }) %>
             </ol>
@@ -53,7 +53,7 @@
             <% if (user.unknownWords) { %> 
              <h5 id="unknown-words">French words unknown: <%= user.unknownWords.length %> </h5>
             <ol>
-              <% user.unknownWords.forEach(unknown => { %>
+              <% user.unknownWords.reverse().forEach(unknown => { %>
                <li><%= unknown %> </li>
               <% }) %>
             </ol>
@@ -83,4 +83,6 @@
           
         
         <%- include('../partials/footer') %> 
+        
+
         

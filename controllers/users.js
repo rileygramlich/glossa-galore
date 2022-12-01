@@ -3,13 +3,22 @@ const Post = require('../models/post')
 
 module.exports = {
   index,
-  feed
+  feed,
+  totalFeed
 }
 
 function index(req, res) {
   res.render('index', {
     user: req.user,
     })
+}
+
+async function totalFeed(req, res) {
+  let users = await User.find({})
+  res.render('users/feed', {
+    users,
+    user: req.user
+  })
 }
 
 function feed(req, res) {

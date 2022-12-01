@@ -1,89 +1,73 @@
 <%- include('../partials/header') %> 
-<% let word = wordBank[Math.floor(Math.random()*wordBank.length)] %> 
-<div class="col s12 m7">
-    <h2 class="header"></h2>
-    <div class="card horizontal">
-      <div class="card-stacked">
-        <div class="card-content">
-          <!-- embed js here to shuffle word -->
-          <h2><%= word.fr %>  </h2>
-        </div>
+<% let word = wordBank[Math.floor(Math.random()*wordBank.length)] %>
+<div class="learn-container">
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <h2><%= word.fr %></h2>
+      </div>
+      <div class="flip-card-back">
+        <h2><%= word.en %></h2>
+        <h4>(<%= word.fr %>)</h4>
         <div id="card-action">
-          <form class="form" id="know-form" action="/learn/know" method="POST">
-            <input type="text" name="known" id="word" value="<%= word.fr %>" readonly style="font-size: 1px">
-            <input type="submit" value="Know">
-          </form>
-          <form class="form" id="unknown-form" action="/learn/unknown" method="POST">
-            <input type="text" name="unknown" id="word" value="<%= word.fr %>" readonly style="font-size: 1px">
-            <input type="submit" value="Don't Know">
-          </form>
         </div>
       </div>
     </div>
   </div>
-  <div>
-    <div class="stats-div">
-      <% if (user.unknownWords) { %> 
-       <h5 id="unknown-words">French words unknown: <%= user.unknownWords.length %> </h5>
-      <ol>
-        <% user.unknownWords.forEach(unknown => { %>
-         <li><%= unknown %> </li>
-        <% }) %>
-      </ol>
-      <% } else { %> 
-        <h5 id="unknown-words">French words unknown: Start learning French! </h5>
-        <% } %> 
+
+  <div class="card-action">
+    <form class="learn-button" id="know-form" action="/learn/<%= user.id %>/addKnown/<%= word.id %>" method="POST">
+      <button type="submit">Know</button>
+    </form>
+    <form class="learn-button" id="unknown-form" action="/learn/<%= user.id %>/addUnknown/<%= word.id %>" method="POST">
+      <button type="submit">Don't Know</button>
+    </form>
+  </div>
+
+  <!-- Stats columns -->
+  <div class="stats-container">
+    <div class="row align-items-start">
+      <div class="col">
+        <% if (user) { %>
+          <h5 id="profile-title">Profile</h5>
+          <p id="user-name"><%= user.name %> </p>
+          <img src=<%= user.avatar %>>
+          <% } else { %>
+            <a href="/auth/google">Click to login to save progress!</a>
+            <% } %>
       </div>
-      <div class="stats-div">
-        <% if (user.knownWords) { %> 
-         <h5 id="known-words">French words known: <%= user.knownWords.length %> </h5>
-        <ol>
-          <% user.knownWords.forEach(known => { %>
-           <li><%= known %> </li>
+      <div class="col">
+        <% if (user.unknownWords) { %> 
+          <h5 id="unknown-words">French words unknown: <%= user.unknownWords.length %> </h5>
+        <ul>
+          <% user.unknownWords.reverse().forEach(unknown => { %>
+            <li><%= unknown.rank %>. <%= unknown.fr %>: <%= unknown.en %>  </li>
           <% }) %>
-        </ol>
+        </ul>
+        <% } else { %> 
+          <h5 id="uknown-words"></h5>
+          <% } %> 
+      </div>
+      <div class="col">
+        <% if (user.knownWords) { %> 
+          <h5 id="known-words">French words known: <%= user.knownWords.length %> </h5>
+        <ul>
+          <% user.knownWords.reverse().forEach(known => { %>
+            <li><%= known.rank %>. <%= known.fr %>: <%= known.en %> </li>
+          <% }) %>
+        </ul>
         <% } else { %> 
           <h5 id="known-words">French words known: Start learning French! </h5>
           <% } %> 
       </div>
+    </div>
   </div>
-<div class="container">
-  <div>
-    <% if (user) { %>
-      <h2 id="profile">Profile</h2>
-      <h5 id=""><%= user.name %> </h5>
-      <h5 id=""><%= user.email %> </h5>
-      <% } else { %>
-        <a href="/auth/google">Click to login</a>
-        <% } %>
-        
-      <div class="container">
-        <div class="side-bar" id="learn-stats">
-          <h6 id="stats">Learning Stats:</h6>
-          <!-- Have ejs for the numbers below: amount gone through / amount select -->
-          <h5 id="prompted">Flash cards prompted: 5/30</h5>
-          <div id="recent-words-prompted">
-            <h5 id="recent-words">Recent Words Prompted:</h5>
-            <!-- build for each loop here to render recent words -->
-            <ol>
-              <li>claro: of course</li>
-              <li>pensar: to think</li>
-            </ol>
-          </div>
-          <div class="random">
-            <h4>Shuffled word: <%= word.fr %></h4> 
-            <a href="/learn">New word</a>
-          </div>
-          <div>
-            <h2 id="wordBank">Top 1000 Words</h2>
-            <% wordBank.forEach(word => { %>
-              <p><%= word.rank %>  <%= word.fr %>: <%= word.en %>   </p>
-            <% }) %>
-          </div>
-        </div>
-      </div>
+</div>
+    
+  <!-- insert other columns from backup -->
+
           
           
         
-        <%- include('../partials/footer') %> 
+<%- include('../partials/footer') %> 
         

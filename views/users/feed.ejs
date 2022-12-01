@@ -1,6 +1,6 @@
 <%- include('../partials/header') %> 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container">
+<div class="feed-container">
    <div class="row">
       <div class="col-md-12">
          <div id="content" class="content content-full-width">
@@ -21,7 +21,11 @@
                      <div class="profile-header-info">
                         <h4 class="m-t-10 m-b-5"><%= user.name %> </h4>
                         <p class="m-b-10">Email: <%= user.email %> </p>
-                        <p class="m-b-10">French words known: <%= user.knownWords.length %></p>
+                        <p class="m-b-10">French words known:
+                            <% if (user.knownWords) { %>
+                           <%= user.knownWords.length %>
+                            <% } %> 
+                            </p>
                         <a href="/users/<%= user.id %>/new-post" id="new-post" class="btn btn-sm btn-info mb-2">New Post</a>
                      </div>
                      <!-- END profile-header-info -->
@@ -45,8 +49,9 @@
                          <li>
                            <!-- begin timeline-time -->
                            <div class="timeline-time">
-                              <span class="date"><%= post.createdAt %>  </span> 
-                              <!-- <span class="time">04:20</span> -->
+                              <span class="date"><%= post.createdAt.toString().substring(4, 15) %></span>
+                              <!-- switch to 12hr time? -->
+                              <span class="time"><%= post.createdAt.toString().substring(16, 21) %></span> 
                            </div>
                            <!-- end timeline-time -->
                            <!-- begin timeline-icon -->

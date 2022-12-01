@@ -16,12 +16,16 @@ let userSchema = new Schema({
   email: String,
   avatar: String,
   googleId: String,
-  knownWords: [String],
-  unknownWords: [String],
+  knownWords: [{ type: Schema.Types.ObjectId, ref: 'Word' }],
+  unknownWords: [{ type: Schema.Types.ObjectId, ref: 'Word' }],
   posts: [postSchema]
 }, {
   timestamps: true
 })
+
+// knownWords: [{ type: Schema.Types.ObjectId, ref: 'Word' }],
+// unknownWords: [{ type: Schema.Types.ObjectId, ref: 'Word' }],
+// comments: [commentsSchema]
 
 // {type: Schema.Types.ObjectId, ref: 'Post'}
 

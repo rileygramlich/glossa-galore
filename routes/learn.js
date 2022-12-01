@@ -7,8 +7,11 @@ router.get('/languages', learnCtrl.languages)
 router.get('/:id', isLoggedIn, learnCtrl.index)
 
 // POSTS
-router.post('/know', learnCtrl.addToKnown)
+router.post('/:uId/addKnown/:wId', learnCtrl.addToKnown)
+router.post('/:uId/addUnknown/:wId', learnCtrl.addToUnknown)
 router.post('/unknown', learnCtrl.addToUnknown)
+
+// DELETES
 
 
 function isLoggedIn(req, res, next) {
