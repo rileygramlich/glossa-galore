@@ -5,7 +5,9 @@ module.exports = {
     newPost,
     create,
     deleteConfirm,
-    deletePost
+    deletePost,
+    edit,
+    update
 }
 
 function newPost(req, res) {
@@ -49,5 +51,21 @@ function deletePost(req, res) {
         user.posts.id(req.params.pId).remove()
         user.save()
         res.redirect(`/users/${req.params.uId}/feed`)
+    })
+}
+
+function edit(req, res) {
+    User.findById(req.params.uId, function(err, user) {
+        let post = user.posts.id(req.params.pId)
+        res.render('posts/edit', {
+            post,
+            user
+        })
+    })
+}
+
+function update(req, res) {
+    User.findById(req.params.uId, function(err, user) {
+        console.log(user)
     })
 }
