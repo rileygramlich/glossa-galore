@@ -6,7 +6,6 @@ const authKey = token
 const translator = new deepl.Translator(authKey)
 require('./database')
 const Word = require('../models/word');
-const word = require('../models/word');
 
 // require the model
 
