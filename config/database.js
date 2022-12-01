@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-const password = process.env.ATLAS_PASSWORD
-
-mongoose.connect(`mongodb+srv://admin:${password}@glossa-galore.u23rxwx.mongodb.net/?retryWrites=true&w=majority`, {
+mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true
 });
 

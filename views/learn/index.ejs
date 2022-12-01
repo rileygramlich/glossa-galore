@@ -41,7 +41,7 @@
           <h5 id="unknown-words">French words unknown: <%= user.unknownWords.length %> </h5>
         <ul>
           <% user.unknownWords.reverse().forEach(unknown => { %>
-            <li><%= unknown.rank %>. <%= unknown.fr %>: <%= unknown.en %>  </li>
+            <li class="word-list"><%= unknown.rank %>. <%= unknown.fr %>: <%= unknown.en %>  </li>
           <% }) %>
         </ul>
         <% } else { %> 
@@ -53,7 +53,7 @@
           <h5 id="known-words">French words known: <%= user.knownWords.length %> </h5>
         <ul>
           <% user.knownWords.reverse().forEach(known => { %>
-            <li><%= known.rank %>. <%= known.fr %>: <%= known.en %> </li>
+            <li class="word-list"><%= known.rank %>. <%= known.fr %>: <%= known.en %> </li>
           <% }) %>
         </ul>
         <% } else { %> 

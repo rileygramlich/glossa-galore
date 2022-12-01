@@ -73,6 +73,13 @@ a {
   display: flex;
 }
 
+.col {
+  border: solid white 2px;
+}
+
+.word-list {
+  font-size: 25px;
+}
 
 /* FEED BOILERPLATE */
 
@@ -742,7 +749,7 @@ select.form-control:not([size]):not([multiple]) {
 .flip-card {
   background-color: transparent;
   margin:auto;
-  width: 300px;
+  width: 400px;
   height: 200px;
   border: 1px solid #f1f1f1;
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
