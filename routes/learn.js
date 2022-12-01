@@ -1,16 +1,13 @@
 let router = require('express').Router()
 let learnCtrl = require('../controllers/learn')
-const request = require('request')
-const { Router } = require('express')
 
+// GETS
 router.get('/', learnCtrl.index)
-
 router.get('/languages', learnCtrl.languages)
-
 router.get('/:id', isLoggedIn, learnCtrl.index)
 
+// POSTS
 router.post('/know', learnCtrl.addToKnown)
-
 router.post('/unknown', learnCtrl.addToUnknown)
 
 

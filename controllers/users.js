@@ -3,12 +3,7 @@ const Post = require('../models/post')
 
 module.exports = {
   index,
-  addPost,
-  deletePost,
-  feed,
-  newPost,
-  create,
-  getAllPosts
+  feed
 }
 
 function index(req, res) {
@@ -23,27 +18,7 @@ function feed(req, res) {
   })
 }
 
-function newPost(req, res) {
-  res.render('posts/new', {
-    user: req.user,
-  })
-}
 
-// question: when you can use req.user.id vs params.id
-// q: do you only use populate for referencing, and should always push if embedding?
-function create(req, res) {
-  console.log('creating post')
-  console.log(req.params.id)
-  console.log(req.body)
-  User.findById(req.params.id, function(err, user) {
-    user.posts.push(req.body)
-    user.save(function(err) {
-      console.log(user)
-      res.redirect(`/users/${req.params.id}/feed`)
-    })
-  })
-}
-    
 
     
 //     function(err, user) {
@@ -54,18 +29,18 @@ function create(req, res) {
 //   })
 // }
 
-function addPost(req, res) {
-    console.log(`Adding post: req.body: ${req.body}`)
-    res.redirect(`/users/${req.user.id}/feed`)
-}
+// function addPost(req, res) {
+//     console.log(`Adding post: req.body: ${req.body}`)
+//     res.redirect(`/users/${req.user.id}/feed`)
+// }
 
-function deletePost(req, res) {
-    console.log(`Deleting post: req.body: ${req.body}`)
-    res.redirect('/')
-}
+// function deletePost(req, res) {
+//     console.log(`Deleting post: req.body: ${req.body}`)
+//     res.redirect('/')
+// }
 
-function getAllPosts() {
-  return Post.find()
-}
+// function getAllPosts() {
+//   return Post.find()
+// }
 
 // grab 1000 words api in the controller function

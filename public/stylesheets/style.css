@@ -461,6 +461,8 @@ select.form-control:not([size]):not([multiple]) {
 
 
 .timeline {
+  display: flex;
+  flex-direction: column-reverse;
   list-style-type: none;
   margin: 0;
   padding: 0;
