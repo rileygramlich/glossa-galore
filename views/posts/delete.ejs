@@ -1,0 +1,54 @@
+<%- include('../partials/header') %>
+    <h1>Delete this post?</h1>
+    <form action="/users/<%= user.id %>/posts/<%= post.id %>?_method=DELETE" method="POST">
+          <!-- <div class="radio">
+              <input type="radio" id="yes" name="yes" value="Yes">
+              <label for="yes">Yes</label><br>
+          <div class="radio">
+              <input type="radio" id="no" name="no" value="No">
+              <label for="no">No</label>
+          </div> -->
+        <button class="btn btn-primary" type="submit">Delete</button>
+      </form>
+
+      <ul class="timeline">
+        <li>
+          <!-- begin timeline-time -->
+          <div class="timeline-time">
+             <span class="date"><%= post.createdAt %>  </span> 
+             <!-- <span class="time">04:20</span> -->
+          </div>
+          <!-- end timeline-time -->
+          <!-- begin timeline-icon -->
+          <div class="timeline-icon">
+             <a href="javascript:;">&nbsp;</a>
+          </div>
+          <!-- end timeline-icon -->
+          <!-- begin timeline-body -->
+          <!-- CREATE FOR LOOP TO RENDER user.posts -->
+           
+           <div class="timeline-body">
+               <div class="timeline-header">
+                <span class="userimage"><img src="<%= user.avatar %>" alt=""></span>
+                <span class="username"><a href="javascript:;"><%= user.name %> </a> <small></small></span>
+               </div>
+               <div class="timeline-content">
+                <h4>
+                    <%= post.title %> 
+                   </h4>
+               </div>
+             <div class="timeline-content">
+                <p>
+                   Recent words learned: <%= post.recentWords %> 
+               </p>
+           </div>
+           <div class="timeline-content">
+               <p>
+                   <%= post.content %> 
+               </p>
+           </div>
+       </div>
+       <!-- end timeline-body -->
+   </li>
+    </ul>
+<%- include('../partials/footer') %> 
