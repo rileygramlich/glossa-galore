@@ -15,9 +15,10 @@
         <li>
           <!-- begin timeline-time -->
           <div class="timeline-time">
-             <span class="date"><%= post.createdAt %>  </span> 
-             <!-- <span class="time">04:20</span> -->
-          </div>
+            <span class="date"><%= post.createdAt.toString().substring(4, 15) %></span>
+            <!-- switch to 12hr time? -->
+            <span class="time"><%= post.createdAt.toString().substring(16, 21) %></span> 
+         </div>
           <!-- end timeline-time -->
           <!-- begin timeline-icon -->
           <div class="timeline-icon">
