@@ -69,7 +69,7 @@ The MEN (MongoDB, Express, Node.js) stack was used to develop this full-stack we
 ## Getting Started: 
 
 ### Demo:
-[Click to learn other languages now!](https://github.com/rileygramlich/glossa-galore)
+[Click to learn other languages now!](https://glossagalore.up.railway.app/)
 
 ## Next Steps: Planned future enhancements:
 1. More languages integration
