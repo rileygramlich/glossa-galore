@@ -2,8 +2,15 @@
     <h1 class="welcome">Welcome to Glossa Galore</h1>
     <h5>Accelerate your vocabulary in another language.</h5>
     <div class="login-links">
-      <a class="welcome-link" href="/users/feed">Feed</a>
-      <a class="welcome-link" href="/learn">Learn Now</a>
+      <% if (user) { %>
+        <a class="welcome-link" href="/users/<%= user.id %>/feed">Feed</a>
+      <% } else { %>
+        <a class="welcome-link" href="/auth/google">Feed</a>
+      <% } %>
+      <% if (user) { %>
+        <a class="welcome-link" href="/learn/<%= user.id %>">Learn Now</a>
+      <% } else { %>
+        <a class="welcome-link" href="/auth/google">Learn Now</a>
+      <% } %>
   </div>
-
 <%- include('./partials/footer') %> 
