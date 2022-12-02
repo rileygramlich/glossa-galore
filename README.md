@@ -9,18 +9,21 @@ This utility app is built with the intention of helping people learn more words 
 
 Learn:
 A usuer can go to the 'Learn' page to be prompted flashcards in the language of their choosing, and thereafter will be prompted a shuffled words from a bank of the commonly used words.  The user then can either click on 'Know' if they know the word which adds it into their progress of known vocabulary and renders it to the screen; or if they do not know the word, they can hover the mouse over the flashcard which reveals to them the translation as well as the original word they are trying to learn underneath in brackets. Get learning to build up your vocab!
-![Screenshot of learn page](./img/Screenshot1.png)
-![Screenshot of flipped card](./img/Screenshot1.png)
-
+![Screenshot of learn page](./public/images/learn-1.png)
+![Screenshot of flipped card on learn page](./public/images/learn-2.png)
 
 Feed:
 If a user clicks on the 'Feed' option in the nav bar, they will be prompted with a display of their profile infomation and a timeline of their past posts.  Here the user has an option to create a post and fill out a form that takes a title, recent words learned, and the post content where the user is encouraged to integrate the words they just learned.  On the feed page, the user has the ability to click on the edit button for a post which brings them to an edit post page, and resubmits the edited version.  Or, if they wish, they can delete the post entirely by clicking which brings them to a confirmation page to see if they are sure about deleting it.
+![Screenshot of learn page](./public/images/feed.png)
+
 
 ## Screenshots:
-![Screenshot of initialized game](./img/Screenshot1.png)
-![Screenshot of game in progress](./img/Screenshot2.png)
-![Screenshot of game won by red](./img/Screenshot3.png)
-![Screenshot of rending on tablet dimentions](./img/Screenshot4.png)
+Of make a post form:
+![Screenshot of learn page](./public/images/new-post.png)
+Of make a edit form:
+![Screenshot of learn page](./public/images/edit.png)
+Of delete form:
+![Screenshot of learn page](./public/images/delete-post.png)
 
 
 ## Technologies Used:
@@ -33,6 +36,8 @@ The MEN (Mango, Express, Node.js) stack was used to develop this full-stack web 
 * Node.js: used as the live server environment, to monitor server operations, and view the web-app in a browser when running nodemon.
 
 * DEEPL API: used as the third party API to make translations in the back-end.
+
+* Google People API: used as a third party API to make Oauthentication with Google possible and bring in Google user data.
 
 * Javascript: used constantly throughout the application to write functions and manipulate the data accordingly.
 
