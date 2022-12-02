@@ -3,6 +3,7 @@
 
 #### By [rileygramlich](https://github.com/rileygramlich)
 ---
+[Click to learn other languages now!](https://glossagalore.up.railway.app/)
 
 ## Description and Background Info:
 This utility app is built with the intention of helping people learn more words in other languages by using a flashcard learning technique.
