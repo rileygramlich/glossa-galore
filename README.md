@@ -55,10 +55,10 @@ The MEN (MongoDB, Express, Node.js) stack was used to develop this full-stack we
 
 * [Trello](https://trello.com/u/rileygramlich1/boards): was used for making a do list list and managing tasks to get done.
 
-* [Lucid](): used to create an initial ERD (environment relationship diagram.
+* [Lucid](https://lucid.app/documents): used to create an initial ERD (environment relationship diagram.
 ![Screenshot of original ERD](./public/images/gg-erd.png)
 
-* WriteOrDie2[https://v2.writeordie.com/] was used as a word processer to write this README.md
+* [WriteOrDie2](https://v2.writeordie.com/) was used as a word processer to write this README.md
 
 * Markdown: used to create this README.md
 
