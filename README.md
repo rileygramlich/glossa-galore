@@ -27,17 +27,17 @@ Of delete form:
 
 
 ## Technologies Used:
-The MEN (Mango, Express, Node.js) stack was used to develop this full-stack web application.
+The MEN (MongoDB, Express, Node.js) stack was used to develop this full-stack web application.
 
-* MongoDB: used to deploy a live cloud server to store data in a database. User model with mongoose referencing for the known and known words (many to many), and mongoose embedding for the posts (one to many).
+* [MongoDB](https://www.mongodb.com/): used to deploy a live cloud server to store data in a database. User model with mongoose referencing for the known and known words (many to many), and mongoose embedding for the posts (one to many).
 
-* Express: used for handling all of the back-end operations (routing, schema data manipulation, and so on).
+* [Express](https://expressjs.com/): used for handling all of the back-end operations (routing, schema data manipulation, and so on).
 
-* Node.js: used as the live server environment, to monitor server operations, and view the web-app in a browser when running nodemon.
+* [Node.js](https://nodejs.org/en/): used as the live server environment, to monitor server operations, and view the web-app in a browser when running nodemon.
 
-* DEEPL API: used as the third party API to make translations in the back-end.
+* [DEEPL API](https://www.deepl.com/en/docs-api): used as the third party API to make translations in the back-end.
 
-* Google People API: used as a third party API to make Oauthentication with Google possible and bring in Google user data.
+* [Google People API](https://console.cloud.google.com/): used as a third party API to make Oauthentication with Google possible and bring in Google user data.
 
 * Javascript: used constantly throughout the application to write functions and manipulate the data accordingly.
 
@@ -47,17 +47,18 @@ The MEN (Mango, Express, Node.js) stack was used to develop this full-stack web 
 
 * Top 1000 words used in Englith list: https://gist.github.com/deekayen/4148741
 
-* Github: used to make commits and have backups and to track the progress of the app.
+* [Github](https://github.com/): used to make commits and have backups and to track the progress of the app.
 
-* VSCode Editor: used to write and code and manage file locations.
+* [VSCode Editor](https://code.visualstudio.com/): used to write and code and manage file locations.
 
-* Railway: used for deploying the app for others to use. Use now: [link to app]
+* [Railway](https://railway.app/): used for deploying the app for others to use. Use now: [link to app]
 
-* Trello: was used for making a do list list and managing tasks to get done.
+* [Trello](https://trello.com/u/rileygramlich1/boards): was used for making a do list list and managing tasks to get done.
 
-* Fluid: used to create an initial ERD (environment relationship diagram.
+* [Lucid](): used to create an initial ERD (environment relationship diagram.
+![Screenshot of original ERD](./public/images/gg-erd.png)
 
-* WriteOrDie2[link writeOrDire] was used as a word processer to write this README.md
+* WriteOrDie2[https://v2.writeordie.com/] was used as a word processer to write this README.md
 
 * Markdown: used to create this README.md
 
