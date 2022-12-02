@@ -15,6 +15,29 @@ a {
   background-color: #cef1ff;
 }
 
+/* HOME PAGE */
+.welcome {
+  font-size: 70px;
+}
+
+.login-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-link {
+  box-shadow: inset 0 0 0 0 #54b3d6;
+  color: #54b3d6;
+  margin: 0 -.25rem;
+  padding: 0 .25rem;
+  transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
+  font-size: 50px;
+}
+.welcome-link:hover {
+  box-shadow: inset 300px 0 0 0 #54b3d6;
+  color: white;
+}
+
 /* Learn Page */
 
 .learn-container {
