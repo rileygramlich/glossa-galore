@@ -6,7 +6,6 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "bootstrap": "^5.2.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "deepl-node": "^1.7.2",
@@ -20,8 +19,7 @@
     "morgan": "~1.9.1",
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
-    "request": "^2.88.2",
-    "type": "module"
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "node-env-run": "^4.0.2"
