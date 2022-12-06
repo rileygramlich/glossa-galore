@@ -4,7 +4,9 @@ let mongoose = require('mongoose')
 let wordSchema = new mongoose.Schema({
     rank: Number,
     en: String,
-    fr: String
+    fr: String,
+    pt: String,
+    de: String
 }, {
     timestamps: true
 });

@@ -1,7 +1,35 @@
 const User = require('../models/user')
 
 module.exports = {
-    deleteUnknown
+    deleteUnknown,
+    addToKnown,
+    addToUnknown
+}
+
+function addToKnown(req, res) {
+  console.log(req.params.wId)
+  User.findById(req.params.uId, function(err, user) {
+    if (err) console.log(err)
+    user.knownWords.push(req.params.wId)
+    user.save(function(err) {
+      if (err) console.log(err)
+      console.log(user)
+      res.redirect(`/learn/${req.params.uId}`)
+    })
+  })
+}
+
+function addToUnknown(req, res) {
+  console.log(req.params.wId)
+  User.findById(req.params.uId, function(err, user) {
+    if (err) console.log(err)
+    user.unknownWords.push(req.params.wId)
+    user.save(function(err) {
+      if (err) console.log(err)
+      console.log(user)
+      res.redirect(`/learn/${req.params.uId}`)
+    })
+  })
 }
 
 function deleteUnknown(req, res) {

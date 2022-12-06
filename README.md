@@ -86,3 +86,5 @@ The MEN (MongoDB, Express, Node.js) stack was used to develop this full-stack we
 11. Add customizability features to change timeline photo or colors used or profile pic if they wanted to user something else other than their google avatar
 12. Add more stats features: flashcards seen, date since learning x language
 13. Add share feature for the app, as well as for sharing individual posts or sharing user pages
+14. Add ability to learn English from other languages
+15. Add ability to learn common phrases with the flashcards

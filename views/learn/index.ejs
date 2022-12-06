@@ -1,14 +1,31 @@
 <%- include('../partials/header') %> 
 <% let word = wordBank[Math.floor(Math.random()*wordBank.length)] %>
+<% if (lang == 'pt') { %>  
+  <% langWord = word.pt %> 
+  <% lang = 'Portuguese' %> 
+  <p>selected language is <%= lang %> </p>
+  <p><%= langWord %> </p>
+  <% } else if (lang == 'fr') { %>
+    <% langWord = word.fe %> 
+    <% lang = 'French' %> 
+    <p>selected language is <%= lang %> </p>
+  <p><%= langWord %> </p> 
+  <% } else if (lang == 'de') { %>
+    <% langWord = word.de %> 
+    <% lang = 'German' %> 
+    <p>selected language is <%= lang %> </p>
+  <p><%= langWord %> </p>
+  <% } %> 
+
 <div class="learn-container">
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <h2><%= word.fr %></h2>
+        <h2><%= langWord  %></h2>
       </div>
       <div class="flip-card-back">
-        <h2><%= word.en %></h2>
-        <h4>(<%= word.fr %>)</h4>
+        <h2><%= word.en  %></h2>
+        <h4>(<%= langWord %>)</h4> 
         <div id="card-action">
         </div>
       </div>
@@ -38,7 +55,7 @@
       </div>
       <div class="col">
         <% if (user.unknownWords) { %> 
-          <h5 id="unknown-words">French words unknown: <%= user.unknownWords.length %> </h5>
+          <h5 id="unknown-words"><%= lang %> words unknown: <%= user.unknownWords.length %> </h5>
         <ul>
           <% user.unknownWords.reverse().forEach(unknown => { %>
             <li class="word-list"><%= unknown.rank %>. <%= unknown.fr %>: <%= unknown.en %>  </li>
@@ -50,7 +67,7 @@
       </div>
       <div class="col">
         <% if (user.knownWords) { %> 
-          <h5 id="known-words">French words known: <%= user.knownWords.length %> </h5>
+          <h5 id="known-words"><%= lang %> words known: <%= user.knownWords.length %> </h5>
         <ul>
           <% user.knownWords.reverse().forEach(known => { %>
             <li class="word-list"><%= known.rank %>. <%= known.fr %>: <%= known.en %> </li>

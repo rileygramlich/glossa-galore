@@ -1,8 +1,17 @@
-<%- include('../partials/header') %> 
+<%- include('../partials/header') %>
 
-<!-- select language you'd like to learn -->
-          
-          
-        
-        <%- include('../partials/footer') %> 
-        
+<h2>Select language you'd like to learn</h2>
+<form action="/learn/<%= user.id %> /languages" method="POST">
+  <select class="form-select" aria-label="Default select example" name="language">
+    <option selected>Choose language</option>
+    <option value="fr">French</option>
+    <option value="pt">Portuguese</option>
+    <option value="de">German</option>
+  </select>
+  <button class="btn waves-effect waves-light" type="submit">
+    Select
+    <i class="material-icons right">send</i>
+  </button>
+</form>
+
+<%- include('../partials/footer') %>
