@@ -14,7 +14,7 @@ function addToKnown(req, res) {
     user.save(function(err) {
       if (err) console.log(err)
       console.log(user)
-      res.redirect(`/learn/${req.params.uId}`)
+      res.redirect(`/learn/${req.params.uId}/${req.params.lang}`)
     })
   })
 }
@@ -27,7 +27,7 @@ function addToUnknown(req, res) {
     user.save(function(err) {
       if (err) console.log(err)
       console.log(user)
-      res.redirect(`/learn/${req.params.uId}`)
+      res.redirect(`/learn/${req.params.uId}/${req.params.lang}`)
     })
   })
 }

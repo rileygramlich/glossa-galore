@@ -1,13 +1,12 @@
 const {readFileSync, promises: fsPromises} = require('fs');
 // const tr = require('./translator')
-const token = '7883edd0-4b28-ed01-f870-44b73a3120d5:fx' //process.env.DEEPL_TOKEN
+const token = process.env.DEEPL_TOKEN
 const deepl = require('deepl-node')
 const authKey = token
 const translator = new deepl.Translator(authKey)
 require('./database')
 const Word = require('../models/word');
 
-console.log(authKey)
 // require the model
 
 
@@ -66,7 +65,6 @@ async function getDeWords() {
   return wordsDB
 }
 
-
 Word.deleteMany({})
   .then(result => {
     return getFrWords()
@@ -83,39 +81,6 @@ Word.deleteMany({})
   .then(result => console.log(result))
 
 
-// getFrWords()
-//   .then(wordsDB => {})
-
-
-// console.log(test())
-
-// async function getDeWords() {
-//   const translations = await translator.translateText(
-//     top100,
-//     'en',
-//     'de',
-//     )
-//     console.log(translations)
-//     for (let i = 0; i<top100.length-1; i++) {
-//       console.log(wordsDB[i])
-//       wordsDB[i].de = translations[i].text
-//   }
-//   console.log(wordsDB)
-//   return wordsDB
-// }
-
-// async function test() {
-//   let wordsDB = await getFrWords()
-//   let newDB = await getDeWords(wordsDB)
-//   return newDB
-// }
-
-
-
-// let's test the imported translator here, before adding to words schema db
-
 module.exports = {
   words
 }
-// loop over the array, put into object pairs for language, and translate it here,
-// an 

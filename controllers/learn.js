@@ -9,7 +9,7 @@ module.exports = {
 }
 
 async function index(req, res) {
-  let user = await User.findById(req.user.id).populate('knownWords').populate('unknownWords')
+  let user = await User.findById(req.params.id).populate('knownWords').populate('unknownWords')
   let wordBank = await Word.find({})
   res.render('learn/index', {
     user: user,

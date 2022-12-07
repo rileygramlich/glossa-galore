@@ -2,84 +2,101 @@
 <% let word = wordBank[Math.floor(Math.random()*wordBank.length)] %>
 <% if (lang == 'pt') { %>  
   <% langWord = word.pt %> 
-  <% lang = 'Portuguese' %> 
-  <p>selected language is <%= lang %> </p>
-  <p><%= langWord %> </p>
+  <% language = 'Portuguese' %> 
   <% } else if (lang == 'fr') { %>
-    <% langWord = word.fe %> 
-    <% lang = 'French' %> 
-    <p>selected language is <%= lang %> </p>
-  <p><%= langWord %> </p> 
+    <% langWord = word.fr %> 
+    <% language = 'French' %> 
   <% } else if (lang == 'de') { %>
     <% langWord = word.de %> 
-    <% lang = 'German' %> 
-    <p>selected language is <%= lang %> </p>
-  <p><%= langWord %> </p>
+    <% language = 'German' %> 
   <% } %> 
-
-<div class="learn-container">
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <h2><%= langWord  %></h2>
+<main>
+  <div class="learn-container">
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <h2><%= langWord  %></h2>
+        </div>
+        <div class="flip-card-back">
+          <h2><%= word.en  %></h2>
+          <h4>(<%= langWord %>)</h4> 
+          <div id="card-action">
+          </div>
+        </div>
       </div>
-      <div class="flip-card-back">
-        <h2><%= word.en  %></h2>
-        <h4>(<%= langWord %>)</h4> 
-        <div id="card-action">
+    </div>
+
+    <div class="card-action">
+      <form class="learn-button" id="know-form" action="/learn/<%= user.id %>/<%= lang %>/addKnown/<%= word.id %>" method="POST">
+        <button type="submit">Know</button>
+      </form>
+      <form class="learn-button" id="unknown-form" action="/learn/<%= user.id %>/<%= lang %>/addUnknown/<%= word.id %>" method="POST">
+        <button type="submit">Don't Know</button>
+      </form>
+    </div>
+
+    <!-- Stats columns -->
+    <div class="stats-container">
+      <div class="row align-items-start">
+        <div class="col">
+          <% if (user) { %>
+            <h5 id="profile-title">Profile</h5>
+            <p id="user-name"><%= user.name %> </p>
+            <img class="learn-avatar" src=<%= user.avatar %>>
+            <% } else { %>
+              <a href="/auth/google">Click to login to save progress!</a>
+              <% } %>
+        </div>
+        <div class="col">
+          <table width="25%">
+            <h5 id="unknown-words"><%= language %> Words Still Learning: <%= user.unknownWords.length %> </h5>
+            <tr>
+              <th>English</th>
+              <th><%= language %> </th>
+            </tr>
+            <% user.unknownWords.reverse().forEach(unknown => { %>
+              <tr>
+                <td><%= unknown.en %></td>
+                <% if (language === 'French') { %>
+                  <td class="translation"><%= unknown.fr %></td> 
+                  <% } %> 
+                <% if (language === 'Portuguese') { %>
+                  <td class="translation"><%= unknown.pt %></td> 
+                  <% } %> 
+                <% if (language === 'German') { %>
+                  <td class="translation"><%= unknown.de %></td> 
+                  <% } %> 
+              </tr>
+              <% }) %>
+            </table>
+        </div>
+        <div class="col">
+          <table width="25%">
+          <h5 id="unknown-words"><%= language %> Words Known: <%= user.knownWords.length %> </h5>
+            <tr>
+              <th>English</th>
+              <th><%= language %></th>
+            </tr>
+            <% user.knownWords.reverse().forEach(known => { %>
+              <tr>
+                <td><%= known.en %></td>
+                <% if (language === 'French') { %>
+                  <td class="translation"><%= known.fr %></td> 
+                  <% } %> 
+                <% if (language === 'Portuguese') { %>
+                  <td class="translation"><%= known.pt %></td> 
+                  <% } %> 
+                <% if (language === 'German') { %>
+                  <td class="translation"><%= known.de %></td> 
+                  <% } %> 
+              </tr>
+              <% }) %>
+            </table>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="card-action">
-    <form class="learn-button" id="know-form" action="/learn/<%= user.id %>/addKnown/<%= word.id %>" method="POST">
-      <button type="submit">Know</button>
-    </form>
-    <form class="learn-button" id="unknown-form" action="/learn/<%= user.id %>/addUnknown/<%= word.id %>" method="POST">
-      <button type="submit">Don't Know</button>
-    </form>
-  </div>
-
-  <!-- Stats columns -->
-  <div class="stats-container">
-    <div class="row align-items-start">
-      <div class="col">
-        <% if (user) { %>
-          <h5 id="profile-title">Profile</h5>
-          <p id="user-name"><%= user.name %> </p>
-          <img class="learn-avatar" src=<%= user.avatar %>>
-          <% } else { %>
-            <a href="/auth/google">Click to login to save progress!</a>
-            <% } %>
-      </div>
-      <div class="col">
-        <% if (user.unknownWords) { %> 
-          <h5 id="unknown-words"><%= lang %> words unknown: <%= user.unknownWords.length %> </h5>
-        <ul>
-          <% user.unknownWords.reverse().forEach(unknown => { %>
-            <li class="word-list"><%= unknown.rank %>. <%= unknown.fr %>: <%= unknown.en %>  </li>
-          <% }) %>
-        </ul>
-        <% } else { %> 
-          <h5 id="uknown-words"></h5>
-          <% } %> 
-      </div>
-      <div class="col">
-        <% if (user.knownWords) { %> 
-          <h5 id="known-words"><%= lang %> words known: <%= user.knownWords.length %> </h5>
-        <ul>
-          <% user.knownWords.reverse().forEach(known => { %>
-            <li class="word-list"><%= known.rank %>. <%= known.fr %>: <%= known.en %> </li>
-          <% }) %>
-        </ul>
-        <% } else { %> 
-          <h5 id="known-words">French words known: Start learning French! </h5>
-          <% } %> 
-      </div>
-    </div>
-  </div>
-</div>
+</main>
     
   <!-- insert other columns from backup -->
 

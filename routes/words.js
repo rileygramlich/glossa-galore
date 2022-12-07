@@ -4,8 +4,8 @@ const wordsCtrl = require('../controllers/words')
 // GETS
 
 // POSTS
-router.post('/:uId/addKnown/:wId', wordsCtrl.addToKnown)
-router.post('/:uId/addUnknown/:wId', wordsCtrl.addToUnknown)
+router.post('/:uId/:lang/addKnown/:wId', wordsCtrl.addToKnown)
+router.post('/:uId/:lang/addUnknown/:wId', wordsCtrl.addToUnknown)
 
 // DELETES
 router.delete('/:id/deleteUnknown/:word', wordsCtrl.deleteUnknown)
