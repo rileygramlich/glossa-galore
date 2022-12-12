@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const Post = require('../models/post')
+const translator = require('../config/translator')
 
 module.exports = {
     newPost,
@@ -23,12 +24,13 @@ function create(req, res) {
     console.log(req.params.id)
     console.log(req.body)
     User.findById(req.params.id, function(err, user) {
-      user.posts.push(req.body)
-      user.save(function(err) {
-        console.log(user)
-        res.redirect(`/users/${req.params.id}/feed`)
-      })
-    })
+        
+        user.posts.push(req.body)
+        user.save(function(err) {
+            console.log(user)
+            res.redirect(`/users/${req.params.id}/feed`)
+        })
+        })
   }
 
 function deleteConfirm(req, res) {
@@ -55,6 +57,7 @@ function deletePost(req, res) {
 }
 
 function edit(req, res) {
+    console.log(translator.translate('My name is riley G'))
     User.findById(req.params.uId, function(err, user) {
         let post = user.posts.id(req.params.pId)
         res.render('posts/edit', {
@@ -74,4 +77,8 @@ function update(req, res) {
         user.save()
         res.redirect(`/users/${req.params.uId}/feed`)
     })
+}
+
+function translatePost(post) {
+
 }

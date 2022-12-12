@@ -20,7 +20,6 @@
                      <!-- BEGIN profile-header-info -->
                      <div class="profile-header-info">
                         <h4 class="m-t-10 m-b-5"><%= user.name %> </h4>
-                        <p class="m-b-10">Email: <%= user.email %> </p>
                         <p class="m-b-10">French words known:
                             <% if (user.knownWords) { %>
                            <%= user.knownWords.length %>
@@ -79,7 +78,8 @@
                             </div>
                             <div class="timeline-content">
                                 <p>
-                                    <%= post.content %> 
+                                    <%= post.content %>
+                                    <%= post.translatedPost.content %> 
                                 </p>
                             </div>
                             <!-- <div class="timeline-likes">

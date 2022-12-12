@@ -1,12 +1,7 @@
-// const token = '7883edd0-4b28-ed01-f870-44b73a3120d5:fx'
+const token = '7883edd0-4b28-ed01-f870-44b73a3120d5:fx'
 const deepl = require('deepl-node')
 const topWords = require('./top1000')
 
-module.exports = {
-    translate
-}
-
-console.log(token)
 
 const authKey = token
 const translator = new deepl.Translator(authKey)
@@ -17,13 +12,17 @@ async function test() {
 }
 
 async function translate(eng) {
-    const result = await translator.translateText(eng, null, 'fr')
+    const result = await translator.translateText(eng, null, 'de')
     console.log(result.text)
     return result.text
 }
 
+
 translate('My name is Riley')
 
+module.exports = {
+    translate
+}
 test()
 
 // (async () => {
