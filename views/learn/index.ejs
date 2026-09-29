@@ -1,107 +1,84 @@
-<%- include('../partials/header') %> 
-<% let word = wordBank[Math.floor(Math.random()*wordBank.length)] %>
-<% if (lang == 'pt') { %>  
-  <% langWord = word.pt %> 
-  <% language = 'Portuguese' %> 
-  <% } else if (lang == 'fr') { %>
-    <% langWord = word.fr %> 
-    <% language = 'French' %> 
-  <% } else if (lang == 'de') { %>
-    <% langWord = word.de %> 
-    <% language = 'German' %> 
-  <% } %> 
-<main>
-  <div class="learn-container">
-    <div class="flip-card">
-      <div class="flip-card-inner">
-        <div class="flip-card-front">
-          <h2><%= langWord  %></h2>
+<%- include('../partials/header', { title: `Learn ${lang.name}`, bodyClass: 'learn' }) %>
+<section class="learn-head">
+  <a href="/learn" class="back-link">← Languages</a>
+  <div class="learn-head__title">
+    <h1><%= lang.native %></h1>
+    <p class="muted"><span data-count="known">0</span> of <%= state.total %> words known</p>
+  </div>
+  <span class="meter meter--wide" role="img" aria-label="Progress" data-meter>
+    <span class="meter__fill" style="--value: 0%"></span>
+  </span>
+</section>
+
+<% if (!user) { %>
+  <p class="notice notice--guest" data-guest-notice>
+    You're practicing as a guest, so progress is saved on this device only.
+    <a href="/login">Sign in</a> to keep it.
+  </p>
+<% } %>
+
+<section class="trainer" aria-label="Flashcards">
+  <div class="card-stage" data-stage>
+    <div class="flashcard" data-card role="button" tabindex="0" aria-label="Flashcard. Press Space to flip.">
+      <div class="flashcard__inner">
+        <div class="flashcard__face flashcard__face--front">
+          <span class="flashcard__meta"><%= lang.name %> · <span data-rank>#</span></span>
+          <span class="flashcard__word" data-front lang="<%= lang.code %>"></span>
+          <span class="flashcard__hint">Tap to reveal</span>
         </div>
-        <div class="flip-card-back">
-          <h2><%= word.en  %></h2>
-          <h4>(<%= langWord %>)</h4> 
-          <div id="card-action">
-          </div>
+        <div class="flashcard__face flashcard__face--back">
+          <span class="flashcard__meta">English</span>
+          <span class="flashcard__word" data-back></span>
+          <span class="flashcard__original" data-original lang="<%= lang.code %>"></span>
         </div>
       </div>
+      <span class="flashcard__stamp flashcard__stamp--known" aria-hidden="true">Know it</span>
+      <span class="flashcard__stamp flashcard__stamp--learning" aria-hidden="true">Still learning</span>
     </div>
 
-    <div class="card-action">
-      <form class="learn-button" id="know-form" action="/learn/<%= user.id %>/<%= lang %>/addKnown/<%= word.id %>" method="POST">
-        <button type="submit">Know</button>
-      </form>
-      <form class="learn-button" id="unknown-form" action="/learn/<%= user.id %>/<%= lang %>/addUnknown/<%= word.id %>" method="POST">
-        <button type="submit">Don't Know</button>
-      </form>
-    </div>
-
-    <!-- Stats columns -->
-    <div class="stats-container">
-      <div class="row align-items-start">
-        <div class="col">
-          <% if (user) { %>
-            <h5 id="profile-title">Profile</h5>
-            <p id="user-name"><%= user.name %> </p>
-            <img class="learn-avatar" src=<%= user.avatar %>>
-            <% } else { %>
-              <a href="/auth/google">Click to login to save progress!</a>
-              <% } %>
-        </div>
-        <div class="col">
-          <table width="25%">
-            <h5 id="unknown-words"><%= language %> Words Still Learning: <%= user.unknownWords.length %> </h5>
-            <tr>
-              <th>English</th>
-              <th><%= language %> </th>
-            </tr>
-            <% user.unknownWords.reverse().forEach(unknown => { %>
-              <tr>
-                <td><%= unknown.en %></td>
-                <% if (language === 'French') { %>
-                  <td class="translation"><%= unknown.fr %></td> 
-                  <% } %> 
-                <% if (language === 'Portuguese') { %>
-                  <td class="translation"><%= unknown.pt %></td> 
-                  <% } %> 
-                <% if (language === 'German') { %>
-                  <td class="translation"><%= unknown.de %></td> 
-                  <% } %> 
-              </tr>
-              <% }) %>
-            </table>
-        </div>
-        <div class="col">
-          <table width="25%">
-          <h5 id="unknown-words"><%= language %> Words Known: <%= user.knownWords.length %> </h5>
-            <tr>
-              <th>English</th>
-              <th><%= language %></th>
-            </tr>
-            <% user.knownWords.reverse().forEach(known => { %>
-              <tr>
-                <td><%= known.en %></td>
-                <% if (language === 'French') { %>
-                  <td class="translation"><%= known.fr %></td> 
-                  <% } %> 
-                <% if (language === 'Portuguese') { %>
-                  <td class="translation"><%= known.pt %></td> 
-                  <% } %> 
-                <% if (language === 'German') { %>
-                  <td class="translation"><%= known.de %></td> 
-                  <% } %> 
-              </tr>
-              <% }) %>
-            </table>
-        </div>
-      </div>
+    <div class="deck-done" data-done hidden>
+      <p class="deck-done__title">That's the whole deck.</p>
+      <p class="muted">You've marked every word as known. <a href="/posts/new">Write about it</a> in your journal.</p>
     </div>
   </div>
-</main>
-    
-  <!-- insert other columns from backup -->
 
-          
-          
-        
-<%- include('../partials/footer') %> 
-        
+  <div class="trainer__actions">
+    <button type="button" class="btn btn--learning btn--large" data-mark="learning">
+      <span aria-hidden="true">←</span> Still learning
+    </button>
+    <button type="button" class="btn btn--known btn--large" data-mark="known">
+      I know it <span aria-hidden="true">→</span>
+    </button>
+  </div>
+  <p class="trainer__hint small muted">
+    <span class="only-touch">Tap to flip. Swipe right if you know it, left if you're still learning.</span>
+    <span class="only-pointer">Press <kbd>Space</kbd> to flip, <kbd>→</kbd> if you know it, <kbd>←</kbd> if you're still learning.</span>
+  </p>
+  <p class="visually-hidden" aria-live="polite" data-announce></p>
+</section>
+
+<section class="word-lists" aria-label="Your words">
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" class="tabs__tab" id="tab-learning" aria-controls="list-learning" aria-selected="true" data-tab="learning">
+      Still learning <span class="tabs__count" data-count="learning">0</span>
+    </button>
+    <button type="button" role="tab" class="tabs__tab" id="tab-known" aria-controls="list-known" aria-selected="false" data-tab="known">
+      Known <span class="tabs__count" data-count="known">0</span>
+    </button>
+  </div>
+  <div role="tabpanel" id="list-learning" aria-labelledby="tab-learning" data-panel="learning">
+    <ul class="word-list" data-list="learning"></ul>
+    <p class="word-list__empty muted" data-empty="learning">Words you're still learning will show up here.</p>
+  </div>
+  <div role="tabpanel" id="list-known" aria-labelledby="tab-known" data-panel="known" hidden>
+    <ul class="word-list" data-list="known"></ul>
+    <p class="word-list__empty muted" data-empty="known">Words you know will show up here.</p>
+  </div>
+</section>
+
+<div class="toast" role="status" data-toast hidden></div>
+
+<noscript><p class="notice">The flashcards need JavaScript turned on.</p></noscript>
+<script type="application/json" id="learn-state"><%- JSON.stringify(state).replace(/</g, '\\u003c') %></script>
+<script src="/javascripts/learn.js" defer></script>
+<%- include('../partials/footer') %>

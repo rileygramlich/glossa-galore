@@ -1,17 +1,28 @@
-<%- include('../partials/header') %>
+<%- include('../partials/header', { title: 'Choose a language' }) %>
+<section class="section-head">
+  <p class="kicker">Learn</p>
+  <h1>Which language today?</h1>
+  <p class="muted">Each deck has the same 1000 common English words.<% if (!user) { %> You can practice as a guest. <a href="/login">Sign in</a> to save your progress on every device.<% } %></p>
+</section>
 
-<h2>Select language you'd like to learn</h2>
-<form action="/learn/<%= user.id %>/languages" method="POST">
-  <select class="form-select" aria-label="Default select example" name="language">
-    <option selected>Choose language</option>
-    <option value="fr">French</option>
-    <option value="pt">Portuguese</option>
-    <option value="de">German</option>
-  </select>
-  <button class="btn waves-effect waves-light" type="submit">
-    Select
-    <i class="material-icons right">send</i>
-  </button>
-</form>
-
+<ul class="language-grid">
+  <% languages.forEach(lang => { %>
+    <% const s = stats && stats[lang.code] %>
+    <li>
+      <a class="language-card" href="/learn/<%= lang.code %>">
+        <span class="language-card__hello"><%= lang.hello %></span>
+        <span class="language-card__native"><%= lang.native %></span>
+        <span class="language-card__name"><%= lang.name %></span>
+        <% if (s) { %>
+          <span class="meter" role="img" aria-label="<%= s.known %> of 1000 words known">
+            <span class="meter__fill" style="--value: <%= s.known / 10 %>%"></span>
+          </span>
+          <span class="language-card__stats"><strong><%= s.known %></strong> known · <%= s.learning %> learning</span>
+        <% } else { %>
+          <span class="language-card__stats">Start the deck →</span>
+        <% } %>
+      </a>
+    </li>
+  <% }) %>
+</ul>
 <%- include('../partials/footer') %>

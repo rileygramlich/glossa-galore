@@ -1,0 +1,19 @@
+<form class="form" action="<%= action %>" method="POST">
+  <div class="field">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" value="<%= post.title || '' %>" maxlength="140" required placeholder="A morning at the market">
+  </div>
+  <div class="field">
+    <label for="recentWords">Words you're using</label>
+    <input type="text" id="recentWords" name="recentWords" value="<%= post.recentWords || '' %>" maxlength="280" placeholder="bonjour, marché, pain" autocapitalize="off">
+    <p class="field__hint">Separate words with commas.<% if (post.recentWords && !post.id) { %> We filled in the last words you marked as known.<% } %></p>
+  </div>
+  <div class="field">
+    <label for="content">Entry</label>
+    <textarea id="content" name="content" rows="9" maxlength="5000" required placeholder="Write a few lines. Try to use each word at least once."><%= post.content || '' %></textarea>
+  </div>
+  <div class="form__actions">
+    <a href="/feed" class="btn btn--ghost">Cancel</a>
+    <button type="submit" class="btn btn--ink"><%= submitLabel %></button>
+  </div>
+</form>

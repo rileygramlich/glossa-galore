@@ -1,3 +1,11 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<%- include('./partials/header', { title: status === 404 ? 'Not found' : 'Error' }) %>
+<section class="panel panel--narrow error-page">
+  <p class="error-page__code"><%= status %></p>
+  <h1><%= status === 404 ? 'Page not found' : 'Something went wrong' %></h1>
+  <p class="muted"><%= message %></p>
+  <a href="/" class="btn btn--ink">Back to the start</a>
+  <% if (error && error.stack) { %>
+    <pre class="error-page__stack"><%= error.stack %></pre>
+  <% } %>
+</section>
+<%- include('./partials/footer') %>

@@ -1,20 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-mongoose.connect(process.env.DATABASE_URL, {
-  useNewUrlParser: true
-});
+const url = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/glossa-galore'
 
-const db = mongoose.connection;
-
-db.on('connected', function() {
-  console.log(`Connected to MongoDB at ${db.host}:${db.port}`);
+mongoose.connection.on('connected', () => {
+  const { host, port, name } = mongoose.connection
+  console.log(`Connected to MongoDB ${name} at ${host}:${port}`)
 })
+mongoose.connection.on('error', err => console.error('MongoDB error:', err.message))
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://admin:<password>@glossa-galore.u23rxwx.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
+// Shared with the session store so the app holds a single connection pool.
+const clientPromise = mongoose.connect(url).then(m => m.connection.getClient())
+
+module.exports = { clientPromise }

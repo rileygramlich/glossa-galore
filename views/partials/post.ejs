@@ -1,0 +1,20 @@
+<article class="entry">
+  <header class="entry__head">
+    <time class="entry__date" datetime="<%= post.createdAt.toISOString() %>"><%= formatDate(post.createdAt) %></time>
+    <% if (post.updatedAt - post.createdAt > 60000) { %><span class="entry__edited">edited</span><% } %>
+  </header>
+  <h2 class="entry__title"><%= post.title %></h2>
+  <% const words = (post.recentWords || '').split(',').map(w => w.trim()).filter(Boolean) %>
+  <% if (words.length) { %>
+    <ul class="chips" aria-label="Words used">
+      <% words.forEach(w => { %><li class="chip"><%= w %></li><% }) %>
+    </ul>
+  <% } %>
+  <div class="entry__body"><%= post.content %></div>
+  <% if (typeof actions === 'undefined' || actions) { %>
+    <footer class="entry__actions">
+      <a href="/posts/<%= post.id %>/edit" class="link-button">Edit</a>
+      <a href="/posts/<%= post.id %>/delete" class="link-button link-button--danger">Delete</a>
+    </footer>
+  <% } %>
+</article>
