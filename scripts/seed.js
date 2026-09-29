@@ -1,18 +1,14 @@
-// Load the word bank from data/words.json into MongoDB. Safe to re-run.
-// Words are upserted by rank, so their ids (and everyone's progress) survive a re-seed.
+// Load (or refresh) the word bank from data/words.json. Safe to re-run.
+// The app also does this on its own at startup when the database is empty.
 require('dotenv').config({ quiet: true })
 const mongoose = require('mongoose')
 const { clientPromise } = require('../config/database')
-const Word = require('../models/word')
-const words = require('../data/words.json')
+const { seedWords } = require('../config/words')
 
 async function seed() {
   await clientPromise
-  await Word.syncIndexes()
-  const result = await Word.bulkWrite(words.map(word => ({
-    updateOne: { filter: { rank: word.rank }, update: { $set: word }, upsert: true }
-  })))
-  console.log(`Seeded ${words.length} words (${result.upsertedCount} new, ${result.modifiedCount} updated).`)
+  const { total, added, updated } = await seedWords()
+  console.log(`Seeded ${total} words (${added} new, ${updated} updated).`)
 }
 
 seed()

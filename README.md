@@ -50,11 +50,19 @@ Without Google credentials, set `ALLOW_DEV_LOGIN=true` in `.env`. The sign-in pa
 |---|---|
 | `DATABASE_URL` | MongoDB connection string. Defaults to `mongodb://127.0.0.1:27017/glossa-galore`. |
 | `SESSION_SECRET` | Required in production. |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_SECRET`, `GOOGLE_CALLBACK` | Google OAuth client. The callback path is `/oauth2callback`. |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_SECRET` | Google OAuth client. The callback path is `/oauth2callback`. |
+| `GOOGLE_CALLBACK` | Optional full callback URL. By default it's built from the request, which works behind Render's and Vercel's proxies. |
 | `ALLOW_DEV_LOGIN` | `true` enables the local test user. Development only. |
 
-### Deploying (Railway or similar)
-Set `NODE_ENV=production`, `DATABASE_URL`, `SESSION_SECRET` and the three Google variables, then run `npm run seed` once against the production database. The start command is `npm start`.
+### Deploying for free
+
+You need a free **MongoDB Atlas** cluster (M0) either way. Create a database user, allow access from `0.0.0.0/0` under Network Access (free hosts have no fixed IP address), and copy the connection string. On the first start the app loads the word bank into an empty database on its own. `npm run seed` refreshes it later if `data/words.json` changes.
+
+**Render** (a normal Node server; the free plan sleeps after 15 idle minutes and takes about a minute to wake): New → Blueprint → this repo. `render.yaml` sets the build and start commands and generates `SESSION_SECRET`. Paste `DATABASE_URL` when asked.
+
+**Vercel** (serverless, no sleep; the Hobby plan is for non-commercial use): import the repo, no settings needed. Vercel detects the Express app from `server.js` and serves `public/` from its CDN. Add `NODE_ENV=production`, `SESSION_SECRET` (`openssl rand -hex 32`) and `DATABASE_URL` as environment variables.
+
+**Google sign-in** is optional: without it, visitors practice as guests. To turn it on, create an OAuth client in Google Cloud Console with the redirect URI `https://<your-domain>/oauth2callback`, then add `GOOGLE_CLIENT_ID` and `GOOGLE_SECRET`.
 
 ## How it's built
 
@@ -68,7 +76,7 @@ routes/ controllers/ index (home, sign-in), learn (decks), words (progress), use
 views/               EJS pages and partials
 public/              stylesheet, the flashcard script, images
 data/                words.json (the word bank) and the original English list
-scripts/seed.js      upserts the word bank by rank, so re-seeding keeps everyone's progress
+config/words.js      loads the word bank (on startup when empty, or via `npm run seed`), upserting by rank so progress survives
 ```
 
 - **Data model.** `Word` documents hold one English word with its French, Portuguese and German translations. Users reference words from their `vocab` entries (many to many), and each entry records a language and a status (`known` or `learning`). Journal posts are embedded in the user (one to many).

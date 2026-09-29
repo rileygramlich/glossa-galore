@@ -11,6 +11,7 @@ const passport = require('passport')
 require('dotenv').config({ quiet: true })
 
 const { clientPromise } = require('./config/database')
+const { ensureWords } = require('./config/words')
 require('./config/passport')
 const { locals } = require('./config/middleware')
 
@@ -22,6 +23,11 @@ const postsRouter = require('./routes/posts')
 
 const app = express()
 const isProduction = app.get('env') === 'production'
+
+// A fresh database gets the word bank on first start; the learn pages wait for it.
+app.locals.wordsReady = clientPromise
+  .then(ensureWords)
+  .catch(err => console.error('Could not load the word bank:', err.message))
 
 if (isProduction && !process.env.SESSION_SECRET) {
   throw new Error('SESSION_SECRET must be set in production')
