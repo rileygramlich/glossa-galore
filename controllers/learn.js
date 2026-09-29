@@ -1,4 +1,5 @@
 const Word = require('../models/word')
+const { requireDatabase } = require('../config/database')
 const { codes } = require('../config/languages')
 
 const DECK_SIZE = 20
@@ -17,6 +18,7 @@ function languages(req, res) {
 
 async function index(req, res) {
   await req.app.locals.wordsReady
+  requireDatabase()
   const lang = req.lang.code
   const total = await Word.estimatedDocumentCount()
   const progress = { known: [], learning: [] }
@@ -48,6 +50,7 @@ async function index(req, res) {
 // `exclude` holds word ranks (a guest's known words, plus cards just seen).
 async function deck(req, res) {
   await req.app.locals.wordsReady
+  requireDatabase()
   const lang = req.lang.code
   const excludeRanks = String(req.query.exclude || '')
     .split(',')
