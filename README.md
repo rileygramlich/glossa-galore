@@ -3,6 +3,8 @@
 
 #### By [rileygramlich](https://github.com/rileygramlich)
 
+**Try it: [glossa-galore.vercel.app](https://glossa-galore.vercel.app)**
+
 ![Glossa Galore home page](./public/images/screenshots/home.png)
 
 ## What it does
@@ -56,13 +58,25 @@ Without Google credentials, set `ALLOW_DEV_LOGIN=true` in `.env`. The sign-in pa
 
 ### Deploying for free
 
-You need a free **MongoDB Atlas** cluster (M0) either way. Create a database user, allow access from `0.0.0.0/0` under Network Access (free hosts have no fixed IP address), and copy the connection string. On the first start the app loads the word bank into an empty database on its own. `npm run seed` refreshes it later if `data/words.json` changes.
+The live site runs on **Vercel** (Hobby plan) with a free **MongoDB Atlas** cluster, both in Oregon (AWS `us-west-2`, Vercel region Portland `pdx1`). Keep the app and the database in the same region: every page makes several database round trips.
 
-**Render** (a normal Node server; the free plan sleeps after 15 idle minutes and takes about a minute to wake): New → Blueprint → this repo. `render.yaml` sets the build and start commands and generates `SESSION_SECRET`. Paste `DATABASE_URL` when asked.
+**1. The database (MongoDB Atlas, free M0 cluster)**
+- Create a database user. A generated letters-and-numbers password is easiest; symbols like `@ : / ? # %` would need URL-encoding.
+- Under **Network Access**, allow `0.0.0.0/0`. Free hosts have no fixed IP address.
+- Copy the connection string (Connect → Drivers). Replace `<db_password>`, **angle brackets included**, and add the database name before the `?`:
+  `mongodb+srv://glossa:Abc123xyz@cluster0.xxxxx.mongodb.net/glossa-galore?retryWrites=true&w=majority`
+- There's no seed step. On first start the app loads the 1000 words into an empty database. `npm run seed` refreshes them later if `data/words.json` changes.
 
-**Vercel** (serverless, no sleep; the Hobby plan is for non-commercial use): import the repo, no settings needed. Vercel detects the Express app from `server.js` and serves `public/` from its CDN. Add `NODE_ENV=production`, `SESSION_SECRET` (`openssl rand -hex 32`) and `DATABASE_URL` as environment variables.
+**2. The app on Vercel** (serverless, no sleep; the Hobby plan is for non-commercial use)
+- Import the repo. No build settings are needed: Vercel detects the Express app from `server.js` and serves `public/` from its CDN.
+- Set the function region to match the database (Settings → Functions).
+- Add the environment variables `NODE_ENV=production`, `SESSION_SECRET` (`openssl rand -hex 32`) and `DATABASE_URL`, then **redeploy**. Vercel only picks up changed variables on the next deploy.
 
-**Google sign-in** is optional: without it, visitors practice as guests. To turn it on, create an OAuth client in Google Cloud Console with the redirect URI `https://<your-domain>/oauth2callback`, then add `GOOGLE_CLIENT_ID` and `GOOGLE_SECRET`.
+**Or on Render** (a normal Node server; the free plan sleeps after 15 idle minutes and takes about a minute to wake): New → Blueprint → this repo. `render.yaml` sets the build and start commands and generates `SESSION_SECRET`. Paste `DATABASE_URL` when asked.
+
+**Google sign-in** is optional. Without it, visitors practice as guests and the sign-in page says accounts are coming soon. To turn it on, create an OAuth client in Google Cloud Console with the redirect URI `https://<your-domain>/oauth2callback`, add `GOOGLE_CLIENT_ID` and `GOOGLE_SECRET`, and redeploy. Anyone who practiced as a guest keeps that progress: it moves into their account the first time they sign in.
+
+**If pages say "Back in a moment"**, the app can't reach the database. The deployment's logs say why, in a line starting `Could not connect to MongoDB`. The usual causes are a wrong password (or a leftover `<db_password>`, which the app also warns about), Network Access not allowing `0.0.0.0/0`, or `DATABASE_URL` added without redeploying.
 
 ## How it's built
 

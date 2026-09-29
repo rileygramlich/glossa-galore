@@ -10,7 +10,7 @@ const passport = require('passport')
 
 require('dotenv').config({ quiet: true })
 
-const { clientPromise } = require('./config/database')
+const { clientPromise, isUnavailable } = require('./config/database')
 const { ensureWords } = require('./config/words')
 require('./config/passport')
 const { locals } = require('./config/middleware')
@@ -35,7 +35,7 @@ if (isProduction && !process.env.SESSION_SECRET) {
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-// Railway (and most hosts) terminate TLS at a proxy.
+// Vercel, Render and most hosts terminate TLS at a proxy.
 app.set('trust proxy', 1)
 
 app.use(helmet({
@@ -56,11 +56,17 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: isProduction ? '7d' : 0 }))
 app.use(methodOverride('_method'))
+const sessionStore = MongoStore.create({ clientPromise, touchAfter: 24 * 3600 })
+// connect-mongo chains onto the connection without a .catch, so an unreachable database
+// at startup would crash the whole process. The failure is already logged; requests
+// that need a session still fail, and get the "can't reach the database" page.
+sessionStore.collectionP?.catch(() => {})
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'glossa-dev-secret',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ clientPromise, touchAfter: 24 * 3600 }),
+  store: sessionStore,
   cookie: {
     httpOnly: true,
     sameSite: 'lax',
@@ -81,13 +87,21 @@ app.use('/learn', wordsRouter)
 app.use((req, res, next) => next(createError(404)))
 
 app.use((err, req, res, next) => {
-  const status = err.status || (err.name === 'ValidationError' || err.name === 'CastError' ? 400 : 500)
+  // Already answered (e.g. the session failed to save after a redirect): let Express close it.
+  if (res.headersSent) return next(err)
+  // The error may have happened before `locals` ran (e.g. in the session store); the page header needs them.
+  locals(req, res, () => {})
+  const unavailable = isUnavailable(err)
+  const status = err.status || (unavailable ? 503 : err.name === 'ValidationError' || err.name === 'CastError' ? 400 : 500)
   if (status >= 500) console.error(err)
+  const message = status === 404 ? "We couldn't find that page."
+    : unavailable ? "Glossa Galore can't reach its database right now. Please try again in a minute."
+    : err.expose ? err.message : 'Something went wrong on our end.'
   res.status(status)
-  if (req.accepts(['html', 'json']) === 'json') return res.json({ error: err.message })
+  if (req.accepts(['html', 'json']) === 'json') return res.json({ error: message })
   res.render('error', {
     status,
-    message: status === 404 ? "We couldn't find that page." : err.expose ? err.message : 'Something went wrong on our end.',
+    message,
     error: isProduction ? null : err
   })
 })

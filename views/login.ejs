@@ -11,13 +11,16 @@
         Continue with Google
       </a>
     <% } else { %>
-      <p class="notice">Google sign-in isn't set up here yet. Add <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_SECRET</code> to <code>.env</code>.</p>
+      <p class="notice">Accounts are coming soon. Until then, practice as a guest: your progress is saved on this device.</p>
+      <a href="/learn" class="btn btn--ink btn--large btn--block">Keep practicing</a>
     <% } %>
     <% if (devLogin) { %>
       <a href="/dev/login" class="btn btn--ghost btn--large btn--block">Continue as test user</a>
     <% } %>
   </div>
 
+  <% if (googleEnabled) { %>
   <p class="small muted">Or <a href="/learn">keep practicing as a guest</a>. Your progress is saved on this device and moves to your account when you sign in.</p>
+  <% } %>
 </section>
 <%- include('./partials/footer') %>
