@@ -1,34 +1,25 @@
-let router = require('express').Router()
-const passport = require('passport');
-let indexCtrl = require('../controllers/index')
-const request = require('request')
+const router = require('express').Router()
+const passport = require('passport')
+const indexCtrl = require('../controllers/index')
 
-// The root route renders our only view
 router.get('/', indexCtrl.index)
+router.get('/login', indexCtrl.login)
 
-// Google OAuth login route
-router.get('/auth/google', passport.authenticate(
-  'google',
-  { scope: ['profile', 'email'] }
-));
+// Google OAuth
+router.get('/auth/google', indexCtrl.requireGoogle, passport.authenticate('google', {
+  scope: ['profile', 'email'],
+  prompt: 'select_account'
+}))
+router.get('/oauth2callback', indexCtrl.requireGoogle, passport.authenticate('google', {
+  failureRedirect: '/login',
+  keepSessionInfo: true
+}), indexCtrl.afterLogin)
 
-// Google OAuth callback route
-router.get('/oauth2callback', passport.authenticate(
-  'google',
-  {
-    successRedirect : `/users`,
-    failureRedirect : '/users'
-  }
-));
+router.post('/logout', indexCtrl.logout)
 
-// OAuth logout route
-router.get('/logout', function(req, res){
-  req.logout(function(err) {
-    if (err) { return next(err); }
-  })
-  res.redirect('/')
-})
+// Sign in as a local test user. Opt-in, and never available in production.
+if (process.env.NODE_ENV !== 'production' && process.env.ALLOW_DEV_LOGIN === 'true') {
+  router.get('/dev/login', indexCtrl.devLogin)
+}
 
-
-
-module.exports = router;
+module.exports = router

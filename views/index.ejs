@@ -1,16 +1,53 @@
-<%- include('./partials/header') %> 
-    <h1 class="welcome">Welcome to Glossa Galore</h1>
-    <h5>Accelerate your vocabulary in another language.</h5>
-    <div class="login-links">
+<%- include('./partials/header', { bodyClass: 'home' }) %>
+<section class="hero">
+  <div class="hero__copy">
+    <p class="kicker">A vocabulary notebook</p>
+    <h1 class="hero__title">Learn the thousand words that do <em>most of the talking.</em></h1>
+    <p class="lede">A thousand words cover most of everyday speech. Flip through them in French, Portuguese or German, keep the ones you know, and write about your day using the new ones.</p>
+    <div class="hero__actions">
+      <a href="/learn" class="btn btn--accent btn--large">Start learning</a>
       <% if (user) { %>
-        <a class="welcome-link" href="/users/<%= user.id %>/feed">Feed</a>
+        <a href="/feed" class="btn btn--ghost btn--large">Open your journal</a>
       <% } else { %>
-        <a class="welcome-link" href="/auth/google">Feed</a>
+        <a href="/login" class="btn btn--ghost btn--large">Sign in to save progress</a>
       <% } %>
-      <% if (user) { %>
-        <a class="welcome-link" href="/learn/<%= user.id %>">Learn Now</a>
-      <% } else { %>
-        <a class="welcome-link" href="/auth/google">Learn Now</a>
-      <% } %>
+    </div>
   </div>
-<%- include('./partials/footer') %> 
+
+  <div class="hero__cards" aria-hidden="true">
+    <div class="specimen specimen--back">
+      <span class="specimen__lang">Deutsch</span>
+      <span class="specimen__word">Freund</span>
+      <span class="specimen__en">friend</span>
+    </div>
+    <div class="specimen specimen--mid">
+      <span class="specimen__lang">Português</span>
+      <span class="specimen__word">água</span>
+      <span class="specimen__en">water</span>
+    </div>
+    <div class="specimen specimen--front">
+      <span class="specimen__lang">Français</span>
+      <span class="specimen__word">bonjour</span>
+      <span class="specimen__en">hello</span>
+    </div>
+  </div>
+</section>
+
+<section class="steps" aria-label="How it works">
+  <article class="step">
+    <span class="step__num">i.</span>
+    <h2>Flip</h2>
+    <p>Each card shows a common word. Tap it to see the English.</p>
+  </article>
+  <article class="step">
+    <span class="step__num">ii.</span>
+    <h2>Sort</h2>
+    <p>Swipe right if you know it, left if you're still learning. Words you know stop showing up.</p>
+  </article>
+  <article class="step">
+    <span class="step__num">iii.</span>
+    <h2>Write</h2>
+    <p>Put your newest words to work in a short journal entry. Using words is how they stick.</p>
+  </article>
+</section>
+<%- include('./partials/footer') %>

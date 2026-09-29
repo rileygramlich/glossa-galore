@@ -1,52 +1,39 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const User = require('../models/user');
+const passport = require('passport')
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+const User = require('../models/user')
 
-// configuring Passport!
-passport.use(new GoogleStrategy({
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_SECRET) {
+  passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    // a user has logged in via OAuth!
-    User.findOne({ 'googleId': profile.id }, function(err, user) {
-      if (err) return cb(err);
-      if (user) {
-        if (!user.avatar) {
-          user.avatar = profile.photos[0].value;
-          user.save(function(err) {
-            return cb(null, user);
-          });
-        } else {
-          return cb(null, user);
-        }
-      } else {
-        // we have a new user via OAuth!
-        const newUser = new User({
-          name: profile.displayName,
-          email: profile.emails[0].value,
-          googleId: profile.id
-        });
-        newUser.save(function(err) {
-          if (err) return cb(err);
-          return cb(null, newUser);
-        });
-      }
-    });
+    callbackURL: process.env.GOOGLE_CALLBACK || '/oauth2callback'
+  }, async (accessToken, refreshToken, profile, cb) => {
+    try {
+      const avatar = profile.photos?.[0]?.value
+      const user = await User.findOneAndUpdate(
+        { googleId: profile.id },
+        {
+          $set: { name: profile.displayName, avatar },
+          $setOnInsert: { email: profile.emails?.[0]?.value }
+        },
+        { new: true, upsert: true }
+      )
+      cb(null, user)
+    } catch (err) {
+      cb(err)
+    }
+  }))
+} else {
+  console.warn('GOOGLE_CLIENT_ID / GOOGLE_SECRET not set: Google sign-in is disabled.')
+}
+
+// Store just the user id in the session, and load the full user on each request.
+passport.serializeUser((user, done) => done(null, user.id))
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    done(null, await User.findById(id))
+  } catch (err) {
+    done(err)
   }
-));
-
-//  Look into what this is:
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
-
-
-
+})

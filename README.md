@@ -1,88 +1,99 @@
 # Glossa Galore
-### A language learning web-app that accelerates your vocabulary in other languages.
+### Flashcards for the 1000 most common words, plus a journal to put them to use.
 
 #### By [rileygramlich](https://github.com/rileygramlich)
----
-[Click to learn other languages now!](https://glossagalore.up.railway.app/)
 
-## Description and Background Info:
-This utility app is built with the intention of helping people learn more words in other languages by using a flashcard learning technique.
+![Glossa Galore home page](./public/images/screenshots/home.png)
 
-### Learn:
-A usuer can go to the 'Learn' page to be prompted flashcards in the language of their choosing, and thereafter will be prompted a shuffled words from a bank of the commonly used words.  The user then can either click on 'Know' if they know the word which adds it into their progress of known vocabulary and renders it to the screen; or if they do not know the word, they can hover the mouse over the flashcard which reveals to them the translation as well as the original word they are trying to learn underneath in brackets. Get learning to build up your vocab!
-![Screenshot of learn page](./public/images/learn-1.png)
-![Screenshot of flipped card on learn page](./public/images/learn-2.png)
+## What it does
 
-### Feed:
-If a user clicks on the 'Feed' option in the nav bar, they will be prompted with a display of their profile infomation and a timeline of their past posts.  Here the user has an option to create a post and fill out a form that takes a title, recent words learned, and the post content where the user is encouraged to integrate the words they just learned.  On the feed page, the user has the ability to click on the edit button for a post which brings them to an edit post page, and resubmits the edited version.  Or, if they wish, they can delete the post entirely by clicking which brings them to a confirmation page to see if they are sure about deleting it.
-![Screenshot of learn page](./public/images/feed.png)
+About a thousand words make up most of everyday speech. Glossa Galore walks you through them in **French, Portuguese or German**.
 
+### Learn
+Pick a language and you get a shuffled deck of cards. Tap a card (or press <kbd>Space</kbd>) to flip it and see the English. Then sort it:
 
-## Screenshots:
-Of make a post form:
-![Screenshot of learn page](./public/images/new-post.png)
-Of make a edit form:
-![Screenshot of learn page](./public/images/edit.png)
-Of delete form:
-![Screenshot of learn page](./public/images/delete-post.png)
+- **I know it:** swipe right, press <kbd>→</kbd>, or tap the button. The word goes on your *Known* list and won't be dealt again.
+- **Still learning:** swipe left, press <kbd>←</kbd>, or tap the button. The word goes on your *Still learning* list and comes back around later in the session.
 
+Each language keeps its own progress. You can remove any word from either list.
 
-## Technologies Used:
-The MEN (MongoDB, Express, Node.js) stack was used to develop this full-stack web application.
+Anyone can practice without an account. Guest progress is saved in the browser, and signing in with Google moves it into your account so it follows you to other devices.
 
-* [MongoDB](https://www.mongodb.com/): used to deploy a live cloud server to store data in a database. User model with mongoose referencing for the known and known words (many to many), and mongoose embedding for the posts (one to many).
+<p>
+  <img src="./public/images/screenshots/learn-mobile.png" alt="Flashcard on a phone" width="260">
+  <img src="./public/images/screenshots/learn-flipped-mobile.png" alt="Flipped flashcard showing the English" width="260">
+  <img src="./public/images/screenshots/journal-mobile.png" alt="Journal on a phone" width="260">
+</p>
 
-* [Express](https://expressjs.com/): used for handling all of the back-end operations (routing, schema data manipulation, and so on).
+### Journal
+Your journal shows your profile, how many words you know in each language, and a timeline of your entries. Write short entries that use the words you just learned. The form fills in your five most recently learned words for you. Entries can be edited and deleted, and deleting asks you to confirm first.
 
-* [Node.js](https://nodejs.org/en/): used as the live server environment, to monitor server operations, and view the web-app in a browser when running nodemon.
+![Learn page in dark mode](./public/images/screenshots/learn-dark.png)
 
-* [DEEPL API](https://www.deepl.com/en/docs-api): used as the third party API to make translations in the back-end.
+## Running it locally
 
-* [Google People API](https://console.cloud.google.com/): used as a third party API to make Oauthentication with Google possible and bring in Google user data.
+You need Node 20+ and MongoDB. The quickest way to get MongoDB is Docker.
 
-* Javascript: used constantly throughout the application to write functions and manipulate the data accordingly.
+```bash
+npm install
+cp .env.example .env                  # then fill in what you need
+docker run -d --name glossa-mongo -p 27017:27017 mongo:7
+npm run seed                          # loads data/words.json into Mongo (safe to re-run)
+npm run dev                           # http://localhost:9999, restarts on file changes
+```
 
-* EJS: used for rendering webpages to the user with embedded javascript display important data like the word on the flash card, or their profile information.
+Without Google credentials, set `ALLOW_DEV_LOGIN=true` in `.env`. The sign-in page then gets a **Continue as test user** button. It's ignored when `NODE_ENV=production`.
 
-* CSS (including bootstrap and materialize libraries): used to style the app and make it look clean and pretty.
+### Environment
 
-* Top 1000 words used in Englith list: https://gist.github.com/deekayen/4148741
+| Variable | |
+|---|---|
+| `DATABASE_URL` | MongoDB connection string. Defaults to `mongodb://127.0.0.1:27017/glossa-galore`. |
+| `SESSION_SECRET` | Required in production. |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_SECRET` | Google OAuth client. The callback path is `/oauth2callback`. |
+| `GOOGLE_CALLBACK` | Optional full callback URL. By default it's built from the request, which works behind Render's and Vercel's proxies. |
+| `ALLOW_DEV_LOGIN` | `true` enables the local test user. Development only. |
 
-* [Github](https://github.com/): used to make commits and have backups and to track the progress of the app.
+### Deploying for free
 
-* [VSCode Editor](https://code.visualstudio.com/): used to write and code and manage file locations.
+You need a free **MongoDB Atlas** cluster (M0) either way. Create a database user, allow access from `0.0.0.0/0` under Network Access (free hosts have no fixed IP address), and copy the connection string. On the first start the app loads the word bank into an empty database on its own. `npm run seed` refreshes it later if `data/words.json` changes.
 
-* [Railway](https://railway.app/): used for deploying the app for others to use. Use now: [link to app]
+**Render** (a normal Node server; the free plan sleeps after 15 idle minutes and takes about a minute to wake): New → Blueprint → this repo. `render.yaml` sets the build and start commands and generates `SESSION_SECRET`. Paste `DATABASE_URL` when asked.
 
-* [Trello](https://trello.com/u/rileygramlich1/boards): was used for making a do list list and managing tasks to get done.
+**Vercel** (serverless, no sleep; the Hobby plan is for non-commercial use): import the repo, no settings needed. Vercel detects the Express app from `server.js` and serves `public/` from its CDN. Add `NODE_ENV=production`, `SESSION_SECRET` (`openssl rand -hex 32`) and `DATABASE_URL` as environment variables.
 
-* [Lucid](https://lucid.app/documents): used to create an initial ERD (environment relationship diagram.
-![Screenshot of original ERD](./public/images/gg-erd.png)
+**Google sign-in** is optional: without it, visitors practice as guests. To turn it on, create an OAuth client in Google Cloud Console with the redirect URI `https://<your-domain>/oauth2callback`, then add `GOOGLE_CLIENT_ID` and `GOOGLE_SECRET`.
 
-* [WriteOrDie2](https://v2.writeordie.com/) was used as a word processer to write this README.md
+## How it's built
 
-* Markdown: used to create this README.md
+A server-rendered **MEN** app (MongoDB, Express, Node.js) with EJS templates:
 
-* Microsoft paint was used to create the original wireframe.
+```
+server.js            app setup: security headers, sessions (stored in Mongo), passport
+config/              database, passport (Google OAuth), languages, shared middleware
+models/              Word (the word bank), User (with embedded vocab progress and posts)
+routes/ controllers/ index (home, sign-in), learn (decks), words (progress), users (journal), posts
+views/               EJS pages and partials
+public/              stylesheet, the flashcard script, images
+data/                words.json (the word bank) and the original English list
+config/words.js      loads the word bank (on startup when empty, or via `npm run seed`), upserting by rank so progress survives
+```
 
-* Google Chrome and its developer tools was used to test the app during production.
+- **Data model.** `Word` documents hold one English word with its French, Portuguese and German translations. Users reference words from their `vocab` entries (many to many), and each entry records a language and a status (`known` or `learning`). Journal posts are embedded in the user (one to many).
+- **Ownership.** Every journal and progress route works on the signed-in user's own data (`req.user`). URLs contain no user ids, so nobody can reach anyone else's posts.
+- **Styling.** Hand-written CSS (no framework), built mobile-first with automatic dark mode. Headings use [Fraunces](https://fonts.google.com/specimen/Fraunces) and the interface uses [Instrument Sans](https://fonts.google.com/specimen/Instrument+Sans).
+- **Word list.** [The 1000 most common English words](https://gist.github.com/deekayen/4148741).
 
-## Getting Started: 
+![Original ERD](./public/images/gg-erd.png)
 
-### Demo:
-[Click to learn other languages now!](https://glossagalore.up.railway.app/)
-
-## Next Steps: Planned future enhancements:
-1. More languages integration
-2. Allow the user to choose how big of a word bank they want their flashcards to shuffle
-3. To not show words on the flashcard that is in the user's known words list
-4. Add the feature that if prompted a word that is in the user's 'Don't know' list, and is now added to 'Know', have it removed from the 'Don't know' list
-5. Add ability to remove words from known words or unknown words lists on Learn page
-6. Add prompt after flashcard session to write a post, and integrate the recently learned words.
-7. Post the post in both languages together
-8. Add ability to make, edit, and delete comments on posts that show comments in both languages for that post
-9. Add social network ability where you can make connections with others and have their posts be in your feed
-10. Add in About page for more info and help if needed, and donation option
-11. Add customizability features to change timeline photo or colors used or profile pic if they wanted to user something else other than their google avatar
-12. Add more stats features: flashcards seen, date since learning x language
-13. Add share feature for the app, as well as for sharing individual posts or sharing user pages
+## Ideas for later
+1. More languages
+2. Let learners choose how big a deck to shuffle
+3. After a session, prompt for a journal entry that uses the new words
+4. Show each post in both languages
+5. Comments on posts, shown in both languages
+6. Follow other learners and see their posts in your feed
+7. An About page with help and a donation option
+8. Custom profile photo and colours
+9. More stats: cards seen, days since you started a language
+10. Share the app, individual posts, or a learner's page

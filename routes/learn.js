@@ -1,22 +1,12 @@
-let router = require('express').Router()
-let learnCtrl = require('../controllers/learn')
+const router = require('express').Router()
+const learnCtrl = require('../controllers/learn')
+const { loadLanguage } = require('../config/middleware')
 
-// GETS
-router.get('/', learnCtrl.index)
-router.get('/languages', learnCtrl.languages)
-router.get('/:id', isLoggedIn, learnCtrl.index)
+router.param('lang', loadLanguage)
 
-// POSTS
-router.post('/:uId/addKnown/:wId', learnCtrl.addToKnown)
-router.post('/:uId/addUnknown/:wId', learnCtrl.addToUnknown)
-router.post('/unknown', learnCtrl.addToUnknown)
-
-// DELETES
-
-
-function isLoggedIn(req, res, next) {
-    if ( req.isAuthenticated() ) return next();
-    res.redirect('/auth/google');
-  }
+// Open to guests. Signed-in users get their progress saved to their account.
+router.get('/', learnCtrl.languages)
+router.get('/:lang', learnCtrl.index)
+router.get('/:lang/deck', learnCtrl.deck)
 
 module.exports = router

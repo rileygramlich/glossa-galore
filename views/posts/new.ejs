@@ -1,20 +1,7 @@
-<%- include('../partials/header') %>
-    <h1>New Post Form</h1>
-    <form action="/users/<%= user.id %>/posts" method="POST">
-        <div class="form-row">
-          <div class="col-md-4 mb-3">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" placeholder="Type title here..." name="title" required>
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="img">Recent words learned</label>
-            <input type="text" class="form-control" id="recentWords" placeholder="Insert recent words learned" name="recentWords" required>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label for="content">Content</label>
-            <textarea type="text" class="form-control" id="content" name="content" required></textarea>
-          </div>
-        <button class="btn btn-primary" type="submit">Submit form</button>
-      </form>
-
-<%- include('../partials/footer') %> 
+<%- include('../partials/header', { title: 'New entry' }) %>
+<section class="panel panel--form">
+  <p class="kicker">Journal</p>
+  <h1>New entry</h1>
+  <%- include('../partials/post-form', { action: '/posts', submitLabel: 'Publish entry' }) %>
+</section>
+<%- include('../partials/footer') %>

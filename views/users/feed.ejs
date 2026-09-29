@@ -1,139 +1,41 @@
-<%- include('../partials/header') %> 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="feed-container">
-   <div class="row">
-      <div class="col-md-12">
-         <div id="content" class="content content-full-width">
-            <!-- begin profile -->
-            <div class="profile">
-               <div class="profile-header">
-                  <!-- BEGIN profile-header-cover -->
-                  <div class="profile-header-cover"></div>
-                  <!-- END profile-header-cover -->
-                  <!-- BEGIN profile-header-content -->
-                  <div class="profile-header-content">
-                     <!-- BEGIN profile-header-img -->
-                     <div class="profile-header-img">
-                        <img class="avatar-img" src="<%= user.avatar %>" alt="profile avatar">
-                     </div>
-                     <!-- END profile-header-img -->
-                     <!-- BEGIN profile-header-info -->
-                     <div class="profile-header-info">
-                        <h4 class="m-t-10 m-b-5"><%= user.name %> </h4>
-                        <p class="m-b-10">Email: <%= user.email %> </p>
-                        <p class="m-b-10">French words known:
-                            <% if (user.knownWords) { %>
-                           <%= user.knownWords.length %>
-                            <% } %> 
-                            </p>
-                        <a href="/users/<%= user.id %>/new-post" id="new-post" class="btn btn-sm btn-info mb-2">New Post</a>
-                     </div>
-                     <!-- END profile-header-info -->
-                  </div>
-                  <!-- END profile-header-content -->
-               </div>
-            </div>
-            <!-- end profile -->
-            <!-- begin profile-content -->
-            <div>
-                <a id="new-post" href=""></a>
-            </div>
-            <div class="profile-content">
-               <!-- begin tab-content -->
-               <div class="tab-content p-0">
-                  <!-- begin #profile-post tab -->
-                  <div class="tab-pane fade active show" id="profile-post">
-                     <!-- begin timeline -->
-                     <ul class="timeline">
-                         <% user.posts.forEach(post => { %>
-                         <li>
-                           <!-- begin timeline-time -->
-                           <div class="timeline-time">
-                              <span class="date"><%= post.createdAt.toString().substring(4, 15) %></span>
-                              <!-- switch to 12hr time? -->
-                              <span class="time"><%= post.createdAt.toString().substring(16, 21) %></span> 
-                           </div>
-                           <!-- end timeline-time -->
-                           <!-- begin timeline-icon -->
-                           <div class="timeline-icon">
-                              <a href="javascript:;">&nbsp;</a>
-                           </div>
-                           <!-- end timeline-icon -->
-                           <!-- begin timeline-body -->
-                           <!-- CREATE FOR LOOP TO RENDER user.posts -->
-                            
-                            <div class="timeline-body">
-                                <div class="timeline-header">
-                                 <span class="userimage"><img src="<%= user.avatar %>" alt=""></span>
-                                 <span class="username"><a href="javascript:;"><%= user.name %> </a> <small></small></span>
-                                </div>
-                                <div class="timeline-content">
-                                 <h4>
-                                     <%= post.title %> 
-                                    </h4>
-                                </div>
-                              <div class="timeline-content">
-                                 <p>
-                                    Recent words learned: <%= post.recentWords %> 
-                                </p>
-                            </div>
-                            <div class="timeline-content">
-                                <p>
-                                    <%= post.content %> 
-                                </p>
-                            </div>
-                            <!-- <div class="timeline-likes">
-                                <div class="stats-right">
-                                    <span class="stats-text">259 Shares</span>
-                                    <span class="stats-text">21 Comments</span>
-                                </div>
-                                <div class="stats">
-                                    <span class="fa-stack fa-fw stats-icon">
-                                        <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                        <i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
-                                    </span>
-                                    <span class="fa-stack fa-fw stats-icon">
-                                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                        <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                    <span class="stats-total">4.3k</span>
-                                </div>
-                            </div> -->
-                            <!-- ADD FUNCTIONALITY TO THESE LINKS -->
-                            <div class="timeline-footer">
-                                <!-- <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a> -->
-                                <a href="/users/<%= user.id %>/edit-post/<%= post.id %>" class="m-r-15 text-inverse-lighter"><i class="fa fa-pencil fa-fw fa-lg m-r-3"></i>Edit</a>
-                                <a href="/users/<%= user.id %>/delete-post/<%= post.id %>" class="m-r-15 text-inverse-lighter"><i class="fa fa-trash fa-fw fa-lg m-r-3"></i>Delete</a>
-                            </div>
-                            <!-- <div class="timeline-comment-box">
-                                <div class="user"><img src="<%= user.avatar %> "></div>
-                                <div class="input">
-                                    <form action="">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                                            <span class="input-group-btn p-l-10">
-                                                <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-                                            </span>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div> -->
-                        </div>
-                        <!-- end timeline-body -->
-                    </li>
-                    <% }) %>
-                     </ul>
-                     <!-- end timeline -->
-                  </div>
-                  <!-- end #profile-post tab -->
-               </div>
-               <!-- end tab-content -->
-            </div>
-            <!-- end profile-content -->
-         </div>
-      </div>
-   </div>
-</div>
-<%- include('../partials/footer') %> 
+<%- include('../partials/header', { title: 'Journal' }) %>
+<section class="profile">
+  <div class="profile__cover" aria-hidden="true"></div>
+  <div class="profile__body">
+    <span class="avatar avatar--lg">
+      <% if (user.avatar) { %>
+        <img src="<%= user.avatar %>" alt="" referrerpolicy="no-referrer">
+      <% } else { %>
+        <span aria-hidden="true"><%= (user.name || '?')[0] %></span>
+      <% } %>
+    </span>
+    <div class="profile__info">
+      <h1><%= user.name %></h1>
+      <p class="muted small">Learning since <%= formatDate(user.createdAt) %></p>
+    </div>
+    <a href="/posts/new" class="btn btn--accent profile__cta">New entry</a>
+  </div>
+  <nav class="stat-row" aria-label="Your languages">
+    <% languages.forEach(lang => { %>
+      <a class="stat" href="/learn/<%= lang.code %>">
+        <span class="stat__label"><%= lang.native %></span>
+        <span class="stat__value"><strong><%= stats[lang.code].known %></strong> known</span>
+      </a>
+    <% }) %>
+  </nav>
+</section>
+
+<section class="journal" aria-label="Journal entries">
+  <% if (posts.length) { %>
+    <% posts.forEach(post => { %>
+      <%- include('../partials/post', { post }) %>
+    <% }) %>
+  <% } else { %>
+    <div class="empty-state">
+      <p class="empty-state__title">Your journal is empty.</p>
+      <p class="muted">Learn a few words, then write a few lines that use them. Anything counts: your morning, a meal, a plan.</p>
+      <a href="/posts/new" class="btn btn--ink">Write your first entry</a>
+    </div>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

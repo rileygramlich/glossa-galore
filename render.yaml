@@ -1,0 +1,24 @@
+# Render Blueprint: New > Blueprint > pick this repo. Free plan (sleeps when idle).
+# Render asks for the values marked `sync: false`. The Google ones can stay blank:
+# guests can still practice, and sign-in turns on once they're filled in.
+services:
+  - type: web
+    name: glossa-galore
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_SECRET
+        sync: false

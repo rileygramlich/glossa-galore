@@ -1,16 +1,12 @@
-let mongoose = require('mongoose')
-var Schema = mongoose.Schema
+const mongoose = require('mongoose')
 
-// post schema
-let postSchema = new Schema({
-  title: String,
-  recentWords: String,
-  content: String
+// Journal posts are embedded in the user who wrote them (one to many).
+const postSchema = new mongoose.Schema({
+  title: { type: String, required: true, trim: true, maxlength: 140 },
+  recentWords: { type: String, trim: true, maxlength: 280 },
+  content: { type: String, required: true, trim: true, maxlength: 5000 }
 }, {
   timestamps: true
 })
 
-
-module.exports = mongoose.model('Post', postSchema)
-
-// populate
+module.exports = postSchema

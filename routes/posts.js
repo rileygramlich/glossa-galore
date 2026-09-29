@@ -1,16 +1,20 @@
 const router = require('express').Router()
 const postsCtrl = require('../controllers/posts')
+const { isLoggedIn } = require('../config/middleware')
+
+// Posts belong to the signed-in user, so every route works on req.user's own posts.
+router.use(isLoggedIn)
 
 // GET
-router.get('/:id/new-post', postsCtrl.newPost)
-router.get('/:uId/delete-post/:pId', postsCtrl.deleteConfirm)
-router.get('/:uId/edit-post/:pId', postsCtrl.edit)
+router.get('/new', postsCtrl.newPost)
+router.get('/:id/edit', postsCtrl.edit)
+router.get('/:id/delete', postsCtrl.deleteConfirm)
 
-// POST
-router.post('/:id/posts', postsCtrl.create)
-router.post('/:uId/posts/:pId', postsCtrl.update)
+// POST / PUT
+router.post('/', postsCtrl.create)
+router.put('/:id', postsCtrl.update)
 
 // DELETE
-router.delete('/:uId/posts/:pId', postsCtrl.deletePost);
+router.delete('/:id', postsCtrl.deletePost)
 
 module.exports = router

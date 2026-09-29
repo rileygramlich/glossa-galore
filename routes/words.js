@@ -1,12 +1,14 @@
-let router = require('express').Router()
+const router = require('express').Router()
 const wordsCtrl = require('../controllers/words')
+const { isLoggedIn, loadLanguage } = require('../config/middleware')
 
-// GETS
+router.param('lang', loadLanguage)
 
-// POSTS
+// POST
+router.post('/:lang/words/:wordId', isLoggedIn, wordsCtrl.mark)
+router.post('/:lang/sync', isLoggedIn, wordsCtrl.sync)
 
-// DELETES
-router.delete('/:id/deleteUnknown/:word', wordsCtrl.deleteUnknown)
-
+// DELETE
+router.delete('/:lang/words/:wordId', isLoggedIn, wordsCtrl.remove)
 
 module.exports = router
