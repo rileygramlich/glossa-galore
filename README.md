@@ -76,10 +76,7 @@ The live site runs on **Vercel** (Hobby plan) with a free **MongoDB Atlas** clus
 
 **Google sign-in** is optional. Without it, visitors practice as guests and the sign-in page says accounts are coming soon. To turn it on, create an OAuth client in Google Cloud Console with the redirect URI `https://<your-domain>/oauth2callback`, add `GOOGLE_CLIENT_ID` and `GOOGLE_SECRET`, and redeploy. Anyone who practiced as a guest keeps that progress: it moves into their account the first time they sign in.
 
-**Suggest a language** (optional): a popup on the language page and in the footer that emails you visitors' suggestions through [EmailJS](https://www.emailjs.com/) (free for 200 a month). It stays hidden until it's configured.
-- In EmailJS, add an Email Service (e.g. Gmail) and an Email Template with **To Email** set to your address, subject `Language suggestion: {{language}}`, and a body that uses `{{language}}`, `{{message}}`, `{{reply_to}}` and `{{page}}`. You can set **Reply To** to `{{reply_to}}`.
-- Add `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID` and `EMAILJS_PUBLIC_KEY` (Account → General) to the host, then redeploy. These IDs are public by design, and your address stays in EmailJS.
-- Under Account → Security, limit requests to your site's domain.
+**Suggest a language**: a popup on the language page and in every page's footer. Suggestions are saved in the database, so there's nothing to set up and nothing is lost. Read them in Atlas under **Browse Collections → `suggestions`**. The endpoint (`POST /suggest`) treats input as hostile: bounded fields, a hidden bot trap, and at most 5 suggestions per sender per 10 minutes (keyed on a salted hash of the IP address, never the address itself).
 
 **If pages say "Back in a moment"**, the app can't reach the database. The deployment's logs say why, in a line starting `Could not connect to MongoDB`. The usual causes are a wrong password (or a leftover `<db_password>`, which the app also warns about), Network Access not allowing `0.0.0.0/0`, or `DATABASE_URL` added without redeploying.
 

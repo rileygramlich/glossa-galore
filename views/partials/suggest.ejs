@@ -1,11 +1,10 @@
 <dialog class="suggest" data-suggest aria-labelledby="suggest-title">
-  <form class="form suggest__form" method="dialog" data-suggest-form
-        data-service="<%= suggest.serviceId %>" data-template="<%= suggest.templateId %>" data-key="<%= suggest.publicKey %>">
+  <form class="form suggest__form" method="dialog" data-suggest-form>
     <div class="suggest__head">
       <h2 id="suggest-title">Suggest a language</h2>
       <button type="button" class="suggest__close" data-suggest-close aria-label="Close">×</button>
     </div>
-    <p class="muted small">Which language should get a deck next? Your suggestion goes straight to Riley.</p>
+    <p class="muted small">Which language should get a deck next? Riley reads every suggestion.</p>
     <div class="field">
       <label for="suggest-language">Language</label>
       <input type="text" id="suggest-language" name="language" maxlength="60" required placeholder="Spanish, Serbian, Japanese…">
