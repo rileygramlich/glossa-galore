@@ -1,0 +1,30 @@
+<dialog class="suggest" data-suggest aria-labelledby="suggest-title">
+  <form class="form suggest__form" method="dialog" data-suggest-form
+        data-service="<%= suggest.serviceId %>" data-template="<%= suggest.templateId %>" data-key="<%= suggest.publicKey %>">
+    <div class="suggest__head">
+      <h2 id="suggest-title">Suggest a language</h2>
+      <button type="button" class="suggest__close" data-suggest-close aria-label="Close">×</button>
+    </div>
+    <p class="muted small">Which language should get a deck next? Your suggestion goes straight to Riley.</p>
+    <div class="field">
+      <label for="suggest-language">Language</label>
+      <input type="text" id="suggest-language" name="language" maxlength="60" required placeholder="Spanish, Serbian, Japanese…">
+    </div>
+    <div class="field">
+      <label for="suggest-message">Anything else? <span class="muted">(optional)</span></label>
+      <textarea id="suggest-message" name="message" rows="3" maxlength="1000" placeholder="Why this one, or what would help you learn it."></textarea>
+    </div>
+    <div class="field">
+      <label for="suggest-email">Your email <span class="muted">(optional, for a reply)</span></label>
+      <input type="email" id="suggest-email" name="reply_to" maxlength="120" autocomplete="email" placeholder="you@example.com">
+    </div>
+    <!-- Left empty by people; bots fill it in, and those submissions are dropped. -->
+    <input type="text" name="website" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="suggest__status small" data-suggest-status role="status"></p>
+    <div class="form__actions">
+      <button type="button" class="btn btn--ghost" data-suggest-close>Cancel</button>
+      <button type="submit" class="btn btn--ink" data-suggest-send>Send</button>
+    </div>
+  </form>
+</dialog>
+<script src="/javascripts/suggest.js" defer></script>

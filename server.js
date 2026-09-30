@@ -42,6 +42,8 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       'img-src': ["'self'", 'data:', 'https://*.googleusercontent.com'],
+      // The "Suggest a language" popup sends through EmailJS.
+      'connect-src': ["'self'", 'https://api.emailjs.com'],
       'style-src': ["'self'", 'https://fonts.googleapis.com'],
       // Progress meters set a CSS variable in a style attribute.
       'style-src-attr': ["'unsafe-inline'"],
