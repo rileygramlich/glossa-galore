@@ -8,7 +8,7 @@ router.get('/login', indexCtrl.login)
 
 // Whether the app can reach its database, and why not. Never includes the password.
 router.get('/health', async (req, res) => {
-  await Promise.race([database.clientPromise.catch(() => {}), new Promise(r => setTimeout(r, 9000))])
+  await database.ensureConnected().catch(() => {})
   const s = database.status()
   res.status(s.database === 'connected' ? 200 : 503).json(s)
 })
