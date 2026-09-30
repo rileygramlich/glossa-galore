@@ -24,9 +24,24 @@ mongoose.connection.on('error', err => console.error('MongoDB error:', err.messa
 const clientPromise = mongoose.connect(url, { serverSelectionTimeoutMS: TIMEOUT_MS })
   .then(m => m.connection.getClient())
 
-// Say why, once: bad password, blocked IP (Atlas Network Access), wrong host...
+// Say why: bad password, blocked IP (Atlas Network Access), wrong host...
 // The driver's message names the host but never the password.
-clientPromise.catch(err => console.error(`Could not connect to MongoDB (${err.name}): ${err.message}`))
+let lastError = null
+clientPromise.catch(err => {
+  lastError = err
+  console.error(`Could not connect to MongoDB (${err.name}): ${err.message}`)
+})
+
+// For /health: is the database connected, and if not, why.
+function status() {
+  const connected = mongoose.connection.readyState === 1
+  return {
+    database: connected ? 'connected' : lastError ? 'error' : 'connecting',
+    reason: connected || !lastError ? undefined : `${lastError.name}: ${lastError.message}`,
+    urlSet: Boolean(process.env.DATABASE_URL),
+    placeholderInUrl: /<[^>]*>/.test(url)
+  }
+}
 
 // Errors that mean "the database isn't reachable", as opposed to a bug.
 function isUnavailable(err) {
@@ -38,9 +53,9 @@ function isUnavailable(err) {
 // that can only time out.
 function requireDatabase() {
   if (mongoose.connection.readyState === 1) return
-  const err = new Error("Can't reach the database.")
+  const err = new Error(`Can't reach the database. ${lastError ? `${lastError.name}: ${lastError.message}` : 'Still connecting.'}`)
   err.name = 'MongoServerSelectionError'
   throw err
 }
 
-module.exports = { clientPromise, isUnavailable, requireDatabase }
+module.exports = { clientPromise, isUnavailable, requireDatabase, status }
