@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const url = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/glossa-galore'
+const url = (process.env.DATABASE_URL || '').trim() || 'mongodb://127.0.0.1:27017/glossa-galore'
 
 if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
   console.error('DATABASE_URL is not set, so the app is trying a local MongoDB that does not exist here.')

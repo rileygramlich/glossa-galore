@@ -2,11 +2,16 @@ const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User = require('../models/user')
 
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_SECRET) {
+// Trimmed: a stray space pasted into the host's settings makes Google answer
+// "OAuth client was not found".
+const clientID = (process.env.GOOGLE_CLIENT_ID || '').trim()
+const clientSecret = (process.env.GOOGLE_SECRET || '').trim()
+
+if (clientID && clientSecret) {
   passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK || '/oauth2callback'
+    clientID,
+    clientSecret,
+    callbackURL: (process.env.GOOGLE_CALLBACK || '').trim() || '/oauth2callback'
   }, async (accessToken, refreshToken, profile, cb) => {
     try {
       const avatar = profile.photos?.[0]?.value
