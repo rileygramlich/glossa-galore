@@ -1,7 +1,8 @@
   </main>
   <footer class="site-footer">
     <p>The 1000 most common English words, in French, Portuguese &amp; German.</p>
-    <p><a href="https://github.com/rileygramlich/glossa-galore">Made by Riley Gramlich</a></p>
+    <p><a href="https://github.com/rileygramlich/glossa-galore">Made by Riley Gramlich</a><% if (suggest) { %> · <button type="button" class="link-button link-button--footer" data-suggest-open>Suggest a language</button><% } %></p>
   </footer>
+  <% if (suggest) { %><%- include('./suggest') %><% } %>
 </body>
 </html>
