@@ -17,8 +17,8 @@ function languages(req, res) {
 }
 
 async function index(req, res) {
+  await requireDatabase()
   await req.app.locals.wordsReady
-  requireDatabase()
   const lang = req.lang.code
   const total = await Word.estimatedDocumentCount()
   const progress = { known: [], learning: [] }
@@ -49,8 +49,8 @@ async function index(req, res) {
 // GET /learn/:lang/deck?exclude=1,2,3 -> a fresh shuffled batch of cards.
 // `exclude` holds word ranks (a guest's known words, plus cards just seen).
 async function deck(req, res) {
+  await requireDatabase()
   await req.app.locals.wordsReady
-  requireDatabase()
   const lang = req.lang.code
   const excludeRanks = String(req.query.exclude || '')
     .split(',')

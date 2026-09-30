@@ -10,7 +10,7 @@ const passport = require('passport')
 
 require('dotenv').config({ quiet: true })
 
-const { clientPromise, isUnavailable } = require('./config/database')
+const { clientPromise, ensureConnected, isUnavailable } = require('./config/database')
 const { ensureWords } = require('./config/words')
 require('./config/passport')
 const { locals } = require('./config/middleware')
@@ -57,10 +57,15 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: isProduction ? '7d' : 0 }))
 app.use(methodOverride('_method'))
 const sessionStore = MongoStore.create({ clientPromise, touchAfter: 24 * 3600 })
-// connect-mongo chains onto the connection without a .catch, so an unreachable database
-// at startup would crash the whole process. The failure is already logged; requests
-// that need a session still fail, and get the "can't reach the database" page.
-sessionStore.collectionP?.catch(() => {})
+
+// Signed-in visitors' sessions live in Mongo. If it's down, (re)connect or show the
+// "can't reach the database" page, rather than waiting on the store. Guests without
+// a session cookie skip this, so the home page and guest pages never need it.
+app.use(async (req, res, next) => {
+  if (!/(^|;\s*)connect\.sid=/.test(req.headers.cookie || '')) return next()
+  await ensureConnected()
+  next()
+})
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'glossa-dev-secret',

@@ -2,11 +2,11 @@
 // The app also does this on its own at startup when the database is empty.
 require('dotenv').config({ quiet: true })
 const mongoose = require('mongoose')
-const { clientPromise } = require('../config/database')
+const { ensureConnected } = require('../config/database')
 const { seedWords } = require('../config/words')
 
 async function seed() {
-  await clientPromise
+  await ensureConnected()
   const { total, added, updated } = await seedWords()
   console.log(`Seeded ${total} words (${added} new, ${updated} updated).`)
 }
