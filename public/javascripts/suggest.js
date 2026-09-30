@@ -1,4 +1,4 @@
-// "Suggest a language": a small popup that emails the suggestion through EmailJS's REST API.
+// "Suggest a language": a small popup that saves the suggestion through POST /suggest.
 (() => {
   const dialog = document.querySelector('[data-suggest]')
   if (!dialog) return
@@ -24,35 +24,30 @@
 
   form.addEventListener('submit', async e => {
     e.preventDefault()
-    if (form.website.value) return dialog.close() // a bot filled in the hidden field
     const language = form.language.value.trim()
     if (!language) return form.language.focus()
 
     send.disabled = true
     say('Sending…', 'pending')
     try {
-      const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      const res = await fetch('/suggest', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          service_id: form.dataset.service,
-          template_id: form.dataset.template,
-          user_id: form.dataset.key,
-          template_params: {
-            language,
-            message: form.message.value.trim() || '(no message)',
-            reply_to: form.reply_to.value.trim() || '(not given)',
-            page: location.href
-          }
+          language,
+          message: form.message.value,
+          reply_to: form.reply_to.value,
+          page: location.pathname,
+          website: form.website.value
         })
       })
-      if (!res.ok) throw new Error(await res.text())
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || res.statusText)
       say(`Thanks! We'll look into adding ${language}.`, 'ok')
       form.reset()
       setTimeout(() => dialog.open && dialog.close(), 2200)
     } catch (err) {
       console.error('Suggestion not sent:', err)
-      say("That didn't send. Please try again in a moment.", 'error')
+      say(err.message && !/fetch/i.test(err.message) ? err.message : "That didn't send. Please try again in a moment.", 'error')
     } finally {
       send.disabled = false
     }

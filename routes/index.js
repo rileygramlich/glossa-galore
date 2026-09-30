@@ -2,6 +2,7 @@ const router = require('express').Router()
 const passport = require('passport')
 const indexCtrl = require('../controllers/index')
 const database = require('../config/database')
+const suggestionsCtrl = require('../controllers/suggestions')
 
 router.get('/', indexCtrl.index)
 router.get('/login', indexCtrl.login)
@@ -12,6 +13,9 @@ router.get('/health', async (req, res) => {
   const s = database.status()
   res.status(s.database === 'connected' ? 200 : 503).json(s)
 })
+
+// "Suggest a language": stored in the database (Atlas > Browse Collections > suggestions).
+router.post('/suggest', suggestionsCtrl.create)
 
 // Google OAuth
 router.get('/auth/google', indexCtrl.requireGoogle, passport.authenticate('google', {
